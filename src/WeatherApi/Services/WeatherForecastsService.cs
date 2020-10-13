@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using WeatherApi.Data.Repositories;
 using WeatherApi.Domain;
 
@@ -13,9 +15,9 @@ namespace WeatherApi.Services
             _weatherForecastsRepository = weatherForecastsRepository;
         }
 
-        public WeatherForecast GetWeatherForecast(string city, DateTimeOffset forecastDate)
+        public Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate, CancellationToken ct = default)
         {
-            return _weatherForecastsRepository.GetForecast(city, forecastDate);
+            return _weatherForecastsRepository.GetWeatherForecast(city, forecastDate, ct);
         }
     }
 }
