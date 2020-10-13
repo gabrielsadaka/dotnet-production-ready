@@ -1,5 +1,8 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WeatherApi.Services;
 
 namespace WeatherApi.Controllers
 {
@@ -7,9 +10,17 @@ namespace WeatherApi.Controllers
     [Route("[controller]")]
     public class WeatherForecastsController : ControllerBase
     {
-        public Task<IActionResult> Get()
+        private readonly IWeatherForecastsService _weatherForecastsService;
+
+        public WeatherForecastsController(IWeatherForecastsService weatherForecastsService)
         {
-            return Task.FromResult<IActionResult>(Ok());
+            _weatherForecastsService = weatherForecastsService;
+        }
+
+        public async Task<IActionResult> Get(string city, DateTimeOffset forecastDate, CancellationToken ct = default)
+        {
+            var weatherForecast = await _weatherForecastsService.GetWeatherForecast(city, forecastDate, ct);
+            return Ok(weatherForecast);
         }
     }
 }

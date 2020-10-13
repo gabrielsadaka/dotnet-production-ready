@@ -6,7 +6,7 @@ using WeatherApi.Domain;
 
 namespace WeatherApi.Services
 {
-    public class WeatherForecastsService
+    public class WeatherForecastsService : IWeatherForecastsService
     {
         private readonly IWeatherForecastsRepository _weatherForecastsRepository;
 

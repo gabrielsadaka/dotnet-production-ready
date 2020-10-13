@@ -10,6 +10,8 @@ namespace WeatherApi.Tests.UnitTests.Data.Repositories
 {
     public class WeatherForecastsRepositoryTests
     {
+        // todo: add test for forecast not found
+
         [Fact]
         public async Task GetWeatherForecastReturnsCorrectForecast()
         {
