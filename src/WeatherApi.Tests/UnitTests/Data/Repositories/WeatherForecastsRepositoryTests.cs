@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WeatherApi.Data;
 using WeatherApi.Data.Repositories;
-using WeatherApi.Domain;
+using WeatherApi.Tests.Builders;
 using Xunit;
 
 namespace WeatherApi.Tests.UnitTests.Data.Repositories
@@ -16,7 +16,12 @@ namespace WeatherApi.Tests.UnitTests.Data.Repositories
             var id = Guid.NewGuid();
             const string city = "Australia/Melbourne";
             var forecastDate = new DateTimeOffset(2020, 1, 3, 3, 2, 4, TimeSpan.Zero);
-            var expectedWeatherForecast = new WeatherForecast(id, city, forecastDate, 10.23m);
+            var expectedWeatherForecast = new WeatherForecastBuilder()
+                .WithId(id)
+                .WithCity(city)
+                .WithForecastDate(forecastDate)
+                .WithForecast(10.23m)
+                .Build();
 
             var dbContextOptions = new DbContextOptionsBuilder<WeatherContext>()
                 .UseInMemoryDatabase("weather-db")

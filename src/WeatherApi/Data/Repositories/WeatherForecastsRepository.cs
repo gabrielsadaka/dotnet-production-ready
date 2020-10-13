@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,8 @@ namespace WeatherApi.Data.Repositories
             _weatherContext = weatherContext;
         }
 
-        public Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate, CancellationToken ct = default)
+        public Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate,
+            CancellationToken ct = default)
         {
             return _weatherContext.WeatherForecasts
                 .SingleOrDefaultAsync(x => x.City == city && x.ForecastDate == forecastDate, ct);

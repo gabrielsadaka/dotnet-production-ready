@@ -7,6 +7,7 @@ namespace WeatherApi.Data.Repositories
 {
     public interface IWeatherForecastsRepository
     {
-        Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate, CancellationToken ct = default);
+        Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate,
+            CancellationToken ct = default);
     }
 }

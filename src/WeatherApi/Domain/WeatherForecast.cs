@@ -1,5 +1,7 @@
 using System;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+
 namespace WeatherApi.Domain
 {
     public class WeatherForecast

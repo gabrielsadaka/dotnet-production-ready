@@ -15,7 +15,8 @@ namespace WeatherApi.Services
             _weatherForecastsRepository = weatherForecastsRepository;
         }
 
-        public Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate, CancellationToken ct = default)
+        public Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate,
+            CancellationToken ct = default)
         {
             return _weatherForecastsRepository.GetWeatherForecast(city, forecastDate, ct);
         }
