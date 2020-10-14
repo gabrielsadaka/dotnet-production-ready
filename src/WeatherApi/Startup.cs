@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WeatherApi.Data;
+using WeatherApi.Data.Repositories;
+using WeatherApi.Services;
 
 namespace WeatherApi
 {
@@ -19,6 +23,11 @@ namespace WeatherApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IWeatherForecastsRepository, WeatherForecastsRepository>();
+            services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
+
+            services.AddDbContext<WeatherContext>(options => options.UseInMemoryDatabase("weather-db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

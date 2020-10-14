@@ -2,28 +2,27 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WeatherApi.Data;
+using WeatherApi.Data.Entities;
 using WeatherApi.Data.Repositories;
-using WeatherApi.Tests.Builders;
 using Xunit;
 
 namespace WeatherApi.Tests.UnitTests.Data.Repositories
 {
     public class WeatherForecastsRepositoryTests
     {
-        // todo: add test for forecast not found
-
         [Fact]
         public async Task GetWeatherForecastReturnsCorrectForecast()
         {
             var id = Guid.NewGuid();
             const string city = "Australia/Melbourne";
             var forecastDate = new DateTimeOffset(2020, 1, 3, 3, 2, 4, TimeSpan.Zero);
-            var expectedWeatherForecast = new WeatherForecastBuilder()
-                .WithId(id)
-                .WithCity(city)
-                .WithForecastDate(forecastDate)
-                .WithForecast(10.23m)
-                .Build();
+            var expectedWeatherForecast = new WeatherForecast
+            {
+                Id = id,
+                City = city,
+                ForecastDate = forecastDate,
+                Forecast = 10.23m
+            };
 
             var dbContextOptions = new DbContextOptionsBuilder<WeatherContext>()
                 .UseInMemoryDatabase("weather-db")

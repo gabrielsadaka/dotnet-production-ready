@@ -6,7 +6,6 @@ using Moq;
 using WeatherApi.Controllers;
 using WeatherApi.Domain;
 using WeatherApi.Services;
-using WeatherApi.Tests.Builders;
 using Xunit;
 
 namespace WeatherApi.Tests.UnitTests.Controllers
@@ -28,12 +27,7 @@ namespace WeatherApi.Tests.UnitTests.Controllers
             var id = Guid.NewGuid();
             const string city = "Australia/Melbourne";
             var forecastDate = new DateTimeOffset(2020, 1, 2, 3, 5, 1, TimeSpan.Zero);
-            var expectedWeatherForecast = new WeatherForecastBuilder()
-                .WithId(id)
-                .WithCity(city)
-                .WithForecastDate(forecastDate)
-                .WithForecast(10.23m)
-                .Build();
+            var expectedWeatherForecast = new WeatherForecast(id, city, forecastDate, 10.23m);
             var stubWeatherForecastsService = new Mock<IWeatherForecastsService>();
             stubWeatherForecastsService
                 .Setup(x => x.GetWeatherForecast(city, forecastDate, It.IsAny<CancellationToken>()))

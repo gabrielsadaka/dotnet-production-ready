@@ -7,7 +7,7 @@ using WeatherApi.Services;
 namespace WeatherApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/weather-forecasts")]
     public class WeatherForecastsController : ControllerBase
     {
         private readonly IWeatherForecastsService _weatherForecastsService;

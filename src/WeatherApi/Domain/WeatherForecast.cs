@@ -1,7 +1,5 @@
 using System;
 
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
-
 namespace WeatherApi.Domain
 {
     public class WeatherForecast
@@ -14,9 +12,9 @@ namespace WeatherApi.Domain
             Forecast = forecast;
         }
 
-        public Guid Id { get; private set; }
-        public string City { get; private set; }
-        public DateTimeOffset ForecastDate { get; private set; }
-        public decimal Forecast { get; private set; }
+        public Guid Id { get; }
+        public string City { get; }
+        public DateTimeOffset ForecastDate { get; }
+        public decimal Forecast { get; }
     }
 }

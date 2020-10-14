@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WeatherApi.Domain;
+using WeatherApi.Data.Entities;
 
 namespace WeatherApi.Data
 {

@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using WeatherApi.Domain;
+using WeatherApi.Data.Entities;
 
 namespace WeatherApi.Data.Repositories
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using WeatherApi.Domain;
+using WeatherApi.Data.Entities;
 
 namespace WeatherApi.Data.Repositories
 {
