@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WeatherApi.Data.Repositories;
 using WeatherApi.Domain;
+using WeatherApi.Exceptions;
 
 namespace WeatherApi.Services
 {
@@ -19,6 +20,9 @@ namespace WeatherApi.Services
             CancellationToken ct = default)
         {
             var weatherForecast = await _weatherForecastsRepository.GetWeatherForecast(city, forecastDate, ct);
+
+            if(weatherForecast == null) throw new NotFoundException();
+
             return new WeatherForecast(weatherForecast.Id, weatherForecast.City, weatherForecast.ForecastDate,
                 weatherForecast.Forecast);
         }

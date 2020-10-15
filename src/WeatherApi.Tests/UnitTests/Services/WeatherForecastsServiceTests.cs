@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Moq;
 using WeatherApi.Data.Entities;
 using WeatherApi.Data.Repositories;
+using WeatherApi.Exceptions;
 using WeatherApi.Services;
 using Xunit;
 
@@ -11,8 +12,6 @@ namespace WeatherApi.Tests.UnitTests.Services
 {
     public class WeatherForecastsServiceTests
     {
-        // todo: add test for forecast not found
-
         [Fact]
         public async Task GetWeatherForecastReturnsCorrectForecast()
         {
@@ -35,6 +34,17 @@ namespace WeatherApi.Tests.UnitTests.Services
 
             Assert.Equal(city, actualWeatherForecast.City);
             Assert.Equal(forecastDate, actualWeatherForecast.ForecastDate);
+        }
+
+        [Fact]
+        public async Task GetWeatherForecastWhenForecastDoesNotExistThrowsNotFoundException()
+        {
+            const string city = "Australia/Melbourne";
+            var forecastDate = new DateTimeOffset(2020, 1, 3, 3, 2, 4, TimeSpan.Zero);
+            var stubWeatherForecastsRepository = new Mock<IWeatherForecastsRepository>();
+
+            var sut = new WeatherForecastsService(stubWeatherForecastsRepository.Object);
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.GetWeatherForecast(city, forecastDate));
         }
     }
 }
