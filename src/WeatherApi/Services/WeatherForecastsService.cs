@@ -21,7 +21,7 @@ namespace WeatherApi.Services
         {
             var weatherForecast = await _weatherForecastsRepository.GetWeatherForecast(city, forecastDate, ct);
 
-            if(weatherForecast == null) throw new NotFoundException();
+            if (weatherForecast == null) throw new NotFoundException();
 
             return new WeatherForecast(weatherForecast.Id, weatherForecast.City, weatherForecast.ForecastDate,
                 weatherForecast.Forecast);

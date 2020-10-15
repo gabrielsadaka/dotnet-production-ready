@@ -10,6 +10,6 @@ namespace WeatherApi.Data
         {
         }
 
-        public DbSet<WeatherForecast> WeatherForecasts { get; set; }
+        public DbSet<WeatherForecast> WeatherForecasts { get; set; } = null!;
     }
 }

@@ -4,7 +4,7 @@ namespace WeatherApi.Domain
 {
     public class WeatherForecast
     {
-        public WeatherForecast(Guid id, string city, DateTimeOffset forecastDate, decimal forecast)
+        public WeatherForecast(Guid id, string? city, DateTimeOffset forecastDate, decimal forecast)
         {
             Id = id;
             City = city;
@@ -13,7 +13,7 @@ namespace WeatherApi.Domain
         }
 
         public Guid Id { get; }
-        public string City { get; }
+        public string? City { get; }
         public DateTimeOffset ForecastDate { get; }
         public decimal Forecast { get; }
     }
