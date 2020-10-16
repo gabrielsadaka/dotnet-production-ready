@@ -1,0 +1,75 @@
+containers:
+  build-env:
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    volumes:
+      - local: .
+        container: /code
+        options: cached
+      - type: cache
+        name: nuget-cache
+        container: /root/.nuget/packages
+      - type: cache
+        name: weatherApi-obj
+        container: /code/src/WeatherApi/obj
+      - type: cache
+        name: weatherApi-tests-obj
+        container: /code/src/WeatherApi.Tests/obj
+    working_directory: /code
+    environment:
+      WEATHERDB__HOST: postgres
+      WEATHERDB__DB: weather_db
+      WEATHERDB__USER: weather_user
+      WEATHERDB__PASSWORD: $POSTGRES_PASSWORD
+    dependencies:
+      - postgres
+  postgres:
+    image: postgres:13
+    ports:
+      - local: 5432
+        container: 5432
+    environment:
+      POSTGRES_DB: weather_db
+      POSTGRES_USER: weather_user
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+  flyway-migrator:
+    image: flyway/flyway:7.0
+    volumes:
+      - local: db/migrations
+        container: /migrations
+        options: cached
+      - local: db/scripts
+        container: /scripts
+        options: cached
+    environment:
+      HOST: postgres
+      PORT: "5432"
+      USERNAME: weather_user
+      PASSWORD: $POSTGRES_PASSWORD
+      DATABASE_NAME: weather_db
+      SCHEMA_NAME: public
+      MIGRATIONS_LOCATION: filesystem:/migrations
+    dependencies:
+      - postgres
+tasks:
+  migrate-db:
+    description: Run database migrations
+    run:
+      container: flyway-migrator
+      entrypoint: /scripts/run-migrations.sh
+  start-integration-test-db:
+    description: Start DB with migrations applied for locally running integration tests
+    run:
+      container: flyway-migrator
+      entrypoint: /scripts/run-migrations-keep-alive.sh
+  build:
+    description: Build Weather API
+    run:
+      container: build-env
+      command: dotnet build
+  test:
+    description: Test Weather API
+    run:
+      container: build-env
+      command: dotnet test
+    prerequisites:
+      - migrate-db

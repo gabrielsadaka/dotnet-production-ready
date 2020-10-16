@@ -23,7 +23,7 @@ namespace WeatherApi.Services
 
             if (weatherForecast == null) throw new NotFoundException();
 
-            return new WeatherForecast(weatherForecast.Id, weatherForecast.City, weatherForecast.ForecastDate,
+            return new WeatherForecast(weatherForecast.Id, weatherForecast.City, weatherForecast.ForecastDate.UtcDateTime,
                 weatherForecast.Forecast);
         }
     }

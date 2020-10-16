@@ -1,5 +1,3 @@
-using System;
-using System.Net;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,7 +32,12 @@ namespace WeatherApi
             services.AddScoped<IWeatherForecastsRepository, WeatherForecastsRepository>();
             services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
 
-            services.AddDbContext<WeatherContext>(options => options.UseInMemoryDatabase("weather-db"));
+            var dbSettings = Configuration.GetSection("WEATHERDB");
+            services.AddDbContext<WeatherContext>(options =>
+                options
+                    .UseNpgsql(
+                        $"Host={dbSettings["HOST"]};Database={dbSettings["DB"]};Username={dbSettings["USER"]};Password={dbSettings["PASSWORD"]}")
+                    .UseSnakeCaseNamingConvention());
 
             services.AddProblemDetails(opts =>
             {

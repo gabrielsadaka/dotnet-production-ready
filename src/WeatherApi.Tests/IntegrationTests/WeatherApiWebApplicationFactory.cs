@@ -1,8 +1,8 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using WeatherApi.Data;
@@ -17,40 +17,47 @@ namespace WeatherApi.Tests.IntegrationTests
         {
             builder.ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(
-                    d => d.ServiceType ==
-                         typeof(DbContextOptions<WeatherContext>));
-
-                services.Remove(descriptor);
-
-                services.AddDbContext<WeatherContext>(options => { options.UseInMemoryDatabase("weather-db"); });
-
                 var sp = services.BuildServiceProvider();
 
-                using (var scope = sp.CreateScope())
+                using var scope = sp.CreateScope();
+
+                var scopedServices = scope.ServiceProvider;
+                var db = scopedServices.GetRequiredService<WeatherContext>();
+                var logger = scopedServices
+                    .GetRequiredService<ILogger<WeatherApiWebApplicationFactory<TStartup>>>();
+
+                db.Database.EnsureCreated();
+
+                try
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<WeatherContext>();
-                    var logger = scopedServices
-                        .GetRequiredService<ILogger<WeatherApiWebApplicationFactory<TStartup>>>();
-
-                    db.Database.EnsureCreated();
-
-                    try
-                    {
-                        InitializeDbForTests(db);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "An error occurred seeding the " +
-                                            "database with test messages. Error: {Message}", ex.Message);
-                    }
+                    InitializeDbForTests(db);
                 }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An error occurred seeding the " +
+                                        "database with test messages. Error: {Message}", ex.Message);
+                }
+            });
+
+            builder.ConfigureAppConfiguration((context, configBuilder) =>
+            {
+                configBuilder.AddInMemoryCollection(new Dictionary<string, string>
+                {
+                    ["WeatherDb:Host"] = "localhost",
+                    ["WeatherDb:Db"] = "weather_db",
+                    ["WeatherDb:User"] = "weather_user"
+                });
+
+                configBuilder.AddEnvironmentVariables();
             });
         }
 
         private void InitializeDbForTests(WeatherContext db)
         {
+            db.WeatherForecasts.RemoveRange(db.WeatherForecasts);
+
+            db.SaveChanges();
+
             db.WeatherForecasts.Add(new WeatherForecast
             {
                 Id = Guid.NewGuid(),
