@@ -43,7 +43,7 @@ const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud
 });
 
 const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding("weather-api-cloud-run", {
-    serviceAccountId: cloudRunServiceAccount.email,
+    serviceAccountId: cloudRunServiceAccount.accountId,
     members: [ "dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
     role: "roles/iam.serviceAccountUser"
 });
