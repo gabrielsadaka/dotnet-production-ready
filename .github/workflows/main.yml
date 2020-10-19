@@ -1,4 +1,4 @@
-name: Run Tests
+name: Build, Test and Deploy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,3 +15,15 @@ jobs:
         run: ./batect test
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@masterv2
+      - name: Build docker image
+      - run: docker build . -t weather-api:${{ github.sha }}
+
+      - uses: Azure/container-scan@v0
+      - name: Scan docker image
+        with:
+          image-name: weather-api:${{ github.sha }}
