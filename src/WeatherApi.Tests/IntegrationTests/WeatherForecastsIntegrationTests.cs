@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,7 +31,7 @@ namespace WeatherApi.Tests.IntegrationTests
             });
 
             using var client = _factory.CreateClient();
-            using var response = await client.GetAsync(url);
+            using var response = await client.GetAsync(new Uri(url, UriKind.Relative));
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -46,13 +48,13 @@ namespace WeatherApi.Tests.IntegrationTests
             });
 
             using var client = _factory.CreateClient();
-            using var response = await client.GetAsync(url);
+            using var response = await client.GetAsync(new Uri(url, UriKind.Relative));
             var responseContent = await response.Content.ReadAsStringAsync();
             var responseObj = JsonSerializer.Deserialize<object>(responseContent) as JsonElement?;
 
             Assert.Equal(city, responseObj?.GetProperty("city").ToString());
             Assert.Equal(forecastDate, responseObj?.GetProperty("forecastDate").ToString());
-            Assert.Equal(23.35m, decimal.Parse(responseObj?.GetProperty("forecast").ToString()!));
+            Assert.Equal(23.35m, decimal.Parse(responseObj?.GetProperty("forecast").ToString()!, CultureInfo.InvariantCulture));
         }
 
         [Fact]
@@ -67,7 +69,7 @@ namespace WeatherApi.Tests.IntegrationTests
             });
 
             using var client = _factory.CreateClient();
-            using var response = await client.GetAsync(url);
+            using var response = await client.GetAsync(new Uri(url, UriKind.Relative));
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

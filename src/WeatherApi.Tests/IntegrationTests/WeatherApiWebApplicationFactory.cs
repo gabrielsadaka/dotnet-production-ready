@@ -15,6 +15,7 @@ namespace WeatherApi.Tests.IntegrationTests
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            if (builder == null) throw new ArgumentNullException(nameof(builder));
             builder.ConfigureServices(services =>
             {
                 var sp = services.BuildServiceProvider();
@@ -32,7 +33,9 @@ namespace WeatherApi.Tests.IntegrationTests
                 {
                     InitializeDbForTests(db);
                 }
+                #pragma warning disable CA1031
                 catch (Exception ex)
+                #pragma warning restore CA1031
                 {
                     logger.LogError(ex, "An error occurred seeding the " +
                                         "database with test messages. Error: {Message}", ex.Message);
@@ -52,7 +55,7 @@ namespace WeatherApi.Tests.IntegrationTests
             });
         }
 
-        private void InitializeDbForTests(WeatherContext db)
+        private static void InitializeDbForTests(WeatherContext db)
         {
             db.WeatherForecasts.RemoveRange(db.WeatherForecasts);
 
