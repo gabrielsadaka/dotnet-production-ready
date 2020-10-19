@@ -4,7 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 
 const config = new pulumi.Config();
 
-const imageName = config.require("dotnet-production-ready-build-image:image-name");
+const imageName = config.require("image-name");
 
 const weatherApiImage = new docker.Image(imageName, {
     imageName: pulumi.interpolate`gcr.io/${gcp.config.project}/${imageName}:latest`,
