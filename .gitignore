@@ -46,3 +46,6 @@ coverage*[.json, .xml, .info]
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+
+# Batect cache
+.batect
