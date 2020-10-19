@@ -10,4 +10,4 @@ npm install
 
 echo "Previewing changes"
 
-pulumi up --stack dev --non-interactive
+pulumi up --stack dev --non-interactive --yes
