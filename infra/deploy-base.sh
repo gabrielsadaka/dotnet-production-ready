@@ -2,14 +2,12 @@
 
 set -e
 
-cd infra/base
-
 echo "Restoring packages"
 
-npm install
+npm --prefix infra/base install infra/base
 
 echo "Applying changes"
 
-pulumi stack select dev -c --non-interactive
+pulumi stack select dev -c --non-interactive -cwd infra/base
 
-pulumi up --stack dev --non-interactive --yes
+pulumi up --stack dev --non-interactive --yes -cwd infra/base
