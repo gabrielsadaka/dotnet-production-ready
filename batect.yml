@@ -53,7 +53,7 @@ containers:
   pulumi:
     image: pulumi/pulumi:v2.12.0
     volumes:
-      - local: infra
+      - local: .
         container: /app
         options: cached
     environment:
@@ -88,4 +88,10 @@ tasks:
     run:
       container: pulumi
       working_directory: /app
-      command: deploy-base.sh
+      command: infra/deploy-base.sh
+  build-push-image:
+    description: Build and push docker image to GCR using Pulumi
+    run:
+      container: pulumi
+      working_directory: /app
+      command: infra/build-push.sh

@@ -3,4 +3,4 @@ import * as gcp from "@pulumi/gcp";
 
 const registry = new gcp.container.Registry("weather-registry");
 
-export const bucketName = registry.urn;
+export const registryUrn = registry.urn;

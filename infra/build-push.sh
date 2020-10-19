@@ -2,7 +2,7 @@
 
 set -e
 
-cd infra/base
+cd infra/build-push
 
 echo "Restoring packages"
 
