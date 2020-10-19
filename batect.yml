@@ -88,4 +88,4 @@ tasks:
     run:
       container: pulumi
       working_directory: /app/base
-      command: npm install && pulumi preview --stack dev --non-interactive
+      command: deploy-base.sh
