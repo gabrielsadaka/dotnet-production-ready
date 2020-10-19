@@ -10,6 +10,6 @@ npm install
 
 echo "Applying changes"
 
-pulumi stack init dev
+pulumi stack select dev -c --non-interactive
 
 pulumi up --stack dev --non-interactive --yes
