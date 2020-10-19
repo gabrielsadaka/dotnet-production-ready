@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@masterv2
+        uses: actions/checkout@v2
         
       - name: Build docker image
         run: docker build . -t weather-api:${{ github.sha }}
