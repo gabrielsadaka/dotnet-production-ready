@@ -8,6 +8,8 @@ npm --prefix infra/build-push install infra/build-push
 
 echo "Applying changes"
 
+gcloud auth configure-docker gcr.io
+
 echo $GOOGLE_CREDENTIALS | docker login -u _json_key --password-stdin https://gcr.io
 
 pulumi stack select dev -c --non-interactive --cwd infra/build-push
