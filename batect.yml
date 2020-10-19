@@ -85,12 +85,12 @@ tasks:
       command: dotnet test
     prerequisites:
       - migrate-db
-  deploy-base-infra:
-    description: Deploy base infra using Pulumi
+  deploy-infra:
+    description: Deploy infra using Pulumi
     run:
       container: pulumi
       working_directory: /app
-      command: infra/deploy-base.sh
+      command: infra/deploy-infra.sh
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:
@@ -102,4 +102,4 @@ tasks:
     run:
       container: pulumi
       working_directory: /app
-      command: infra/deploy.sh
+      command: infra/deploy-app.sh
