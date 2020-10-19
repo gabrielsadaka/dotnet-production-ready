@@ -36,6 +36,22 @@ var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${imageName}-
 // String used to force the update using the new image.
 var truncatedSha = registryImage.sha256Digest.apply(d => imageName + "-" + d.substr(8,20));
 
+const enableCloudRun = new gcp.projects.Service("EnableCloudRun", {
+    service: "run.googleapis.com",
+});
+
+const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud-run", {
+    accountId: "weather-api-cloud-run",
+    description: "Weather API Cloud Run Service Account",
+    displayName: "Weather API Cloud Run"
+});
+
+const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding("weather-api-cloud-run", {
+    serviceAccountId: cloudRunServiceAccount.email,
+    members: [ "dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
+    role: "roles/iam.serviceAccountUser"
+});
+
 // Deploy to Cloud Run if there is a difference in the sha, denoted above.
 const weatherApi = new gcp.cloudrun.Service("weather-api", {
     location,
@@ -44,7 +60,8 @@ const weatherApi = new gcp.cloudrun.Service("weather-api", {
         spec: {
             containers: [{
                 image: dockerImage.name,
-            }]
+            }],
+            serviceAccountName: cloudRunServiceAccount.email
         },
     },
 }, {dependsOn: dockerImage});
