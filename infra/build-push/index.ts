@@ -9,7 +9,7 @@ const imageName = config.require("image-name");
 const weatherApiImage = new docker.Image(imageName, {
     imageName: pulumi.interpolate`gcr.io/${gcp.config.project}/${imageName}:latest`,
     build: {
-        context: ".",
+        context: "../../",
     },
 });
 
