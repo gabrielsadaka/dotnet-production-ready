@@ -86,5 +86,5 @@ tasks:
   deploy-base-infra:
     description: Deploy base infra using Pulumi
     run:
-      container: pulimi
+      container: pulumi
       command: cd /app/base && npm install && pulumi preview --stack dev --non-interactive
