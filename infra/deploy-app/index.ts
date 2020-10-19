@@ -37,7 +37,7 @@ var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${imageName}-
 var truncatedSha = registryImage.sha256Digest.apply(d => imageName + "-" + d.substr(8,20));
 
 const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud-run", {
-    accountId: "weather-api-cloud-run",
+    accountId: "weather-api",
     description: "Weather API Cloud Run Service Account",
     displayName: "Weather API Cloud Run"
 });
