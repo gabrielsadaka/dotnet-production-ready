@@ -40,6 +40,10 @@ const enableCloudRun = new gcp.projects.Service("EnableCloudRun", {
     service: "run.googleapis.com",
 });
 
+const enableIamAPI = new gcp.projects.Service("EnableIamApi", {
+    service: "iam.googleapis.com",
+});
+
 const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud-run", {
     accountId: "weather-api-cloud-run",
     description: "Weather API Cloud Run Service Account",
