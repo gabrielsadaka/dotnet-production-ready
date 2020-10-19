@@ -19,6 +19,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
   build-docker-image:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
