@@ -4,7 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 import * as docker from "@pulumi/docker";
 
-const location = gcp.config.region || "australia-southeast1-a";
+const location = gcp.config.region || "australia-southeast1";
 
 const config = new pulumi.Config();
 

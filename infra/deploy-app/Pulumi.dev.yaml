@@ -1,5 +1,5 @@
 config:
   gcp:project: dotnetproductionready
-  gcp:region: australia-southeast1-a
+  gcp:region: australia-southeast1
   dotnet-production-ready-deploy:image-name: weather-api
   dotnet-production-ready-deploy:docker-config-file: ~/.docker/config.json
