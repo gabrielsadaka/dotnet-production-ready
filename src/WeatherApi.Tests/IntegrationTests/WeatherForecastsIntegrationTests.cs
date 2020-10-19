@@ -31,7 +31,7 @@ namespace WeatherApi.Tests.IntegrationTests
             using var client = _factory.CreateClient();
             using var response = await client.GetAsync(url);
 
-            response.EnsureSuccessStatusCode();
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
