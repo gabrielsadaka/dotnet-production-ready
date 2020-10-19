@@ -2,14 +2,12 @@
 
 set -e
 
-cd infra/build-push
-
 echo "Restoring packages"
 
-npm install
+npm --prefix infra/build-push install infra/build-push
 
 echo "Applying changes"
 
-pulumi stack select dev -c --non-interactive
+pulumi stack select dev -c --non-interactive -cwd infra/build-push
 
-pulumi up --stack dev --non-interactive --yes
+pulumi up --stack dev --non-interactive --yes -cwd infra/build-push
