@@ -87,5 +87,5 @@ tasks:
     description: Deploy base infra using Pulumi
     run:
       container: pulumi
-      working_directory: /app/base
+      working_directory: /app
       command: deploy-base.sh

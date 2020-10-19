@@ -2,10 +2,12 @@
 
 set -e
 
+cd base
+
 echo "Restoring packages"
 
 npm install
 
 echo "Previewing changes"
 
-pulumi preview --stack dev --non-interactive
+pulumi up --stack dev --non-interactive
