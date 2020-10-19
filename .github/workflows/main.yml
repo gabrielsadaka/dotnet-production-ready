@@ -17,18 +17,3 @@ jobs:
         run: ./batect test
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-
-  build-docker-image:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        
-      - name: Build docker image
-        run: docker build . -t weather-api:${{ github.sha }}
-        
-      - name: Scan docker image
-        uses: Azure/container-scan@v0
-        with:
-          image-name: weather-api:${{ github.sha }}
