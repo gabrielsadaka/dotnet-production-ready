@@ -10,7 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Test application
         run: ./batect test
         env:
@@ -19,11 +21,13 @@ jobs:
   build-docker-image:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@masterv2
+      - name: Checkout code
+        uses: actions/checkout@masterv2
+        
       - name: Build docker image
-      - run: docker build . -t weather-api:${{ github.sha }}
-
-      - uses: Azure/container-scan@v0
+        run: docker build . -t weather-api:${{ github.sha }}
+        
       - name: Scan docker image
+        uses: Azure/container-scan@v0
         with:
           image-name: weather-api:${{ github.sha }}
