@@ -13,3 +13,5 @@ jobs:
       - uses: actions/checkout@v2
       - name: Test application
         run: ./batect test
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
