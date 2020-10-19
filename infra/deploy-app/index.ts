@@ -6,9 +6,9 @@ import * as docker from "@pulumi/docker";
 
 const location = gcp.config.region || "australia-southeast1-a";
 
-const configFile = process.env["GOOGLE_CREDENTIALS"];
-
 const config = new pulumi.Config();
+
+const configFile = config.require("docker-config-file");
 
 const imageName = config.require("image-name");
 
