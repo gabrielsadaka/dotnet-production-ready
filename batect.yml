@@ -97,3 +97,9 @@ tasks:
       container: pulumi
       working_directory: /app
       command: infra/build-push.sh
+  deploy:
+    description: Deploy Weather API to GCP Cloud Run using Pulumi
+    run:
+      container: pulumi
+      working_directory: /app
+      command: infra/deploy.sh
