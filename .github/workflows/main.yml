@@ -1,4 +1,6 @@
 name: Build, Test and Deploy
+env:
+  BATECT_ENABLE_TELEMETRY: true
 
 on:
   push:
