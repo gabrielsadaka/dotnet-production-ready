@@ -87,4 +87,5 @@ tasks:
     description: Deploy base infra using Pulumi
     run:
       container: pulumi
-      command: cd /app/base && npm install && pulumi preview --stack dev --non-interactive
+      working_directory: /app/base
+      command: npm install && pulumi preview --stack dev --non-interactive
