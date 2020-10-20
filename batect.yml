@@ -122,3 +122,5 @@ tasks:
       container: pulumi
       working_directory: /app
       command: infra/deploy-app.sh
+      environment:
+        GOOGLE_RUN_SERVICE_ACCOUNT: $GOOGLE_RUN_SERVICE_ACCOUNT

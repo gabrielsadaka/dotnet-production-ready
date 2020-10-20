@@ -46,4 +46,8 @@ const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${imageName}-clou
     displayName: `${imageName} cloud run`
 });
 
-export const cloudRunServiceAccountName = cloudRunServiceAccount.name;
+const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${imageName}-cloud-run`, {
+    serviceAccountId: cloudRunServiceAccount.id,
+    members: [ `serviceAccount:${process.env.GOOGLE_SERVICE_ACCOUNT}` ],
+    role: "roles/iam.serviceAccountUser"
+});
