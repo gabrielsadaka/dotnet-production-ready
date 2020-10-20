@@ -9,8 +9,9 @@ const location = gcp.config.region || "australia-southeast1";
 const config = new pulumi.Config();
 
 const configFile = config.require("docker-config-file");
-
-const appName = process.env.APP_NAME;
+const appName = config.require("app-name");
+const gitSha = config.require("git-sha");
+const googleCloudRunServiceAccount = config.require("google-run-service-account");
 
 const gcrDockerProvider = new docker.Provider('gcr', {
     registryAuth: [{
@@ -22,7 +23,7 @@ const gcrDockerProvider = new docker.Provider('gcr', {
 // Used to get the image from the google cloud registry.  Output is required to make sure that the provider is in sync with this call.
 const registryImage = pulumi.output(
     docker.getRegistryImage({
-    name: `gcr.io/${gcp.config.project}/${appName}:${process.env.GITHUB_SHA}`,
+    name: `gcr.io/${gcp.config.project}/${appName}:${gitSha}`,
 }, {provider: gcrDockerProvider}));
 
 
@@ -45,7 +46,7 @@ const weatherApi = new gcp.cloudrun.Service(`${appName}`, {
             containers: [{
                 image: dockerImage.name,
             }],
-            serviceAccountName: process.env.GOOGLE_RUN_SERVICE_ACCOUNT
+            serviceAccountName: googleCloudRunServiceAccount
         },
     },
 }, {dependsOn: dockerImage});

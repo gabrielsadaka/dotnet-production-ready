@@ -1,3 +1,3 @@
-name: dotnet-production-ready-deploy-infra
+name: dotnet-prod-deploy-infra
 runtime: nodejs
 description: Dotnet Production Ready Deploy Infra

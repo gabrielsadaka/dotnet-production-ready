@@ -1,5 +1,5 @@
 {
-    "name": "dotnet-production-ready-deploy-infra",
+    "name": "dotnet-prod-deploy-infra",
     "devDependencies": {
         "@types/node": "^10.0.0"
     },

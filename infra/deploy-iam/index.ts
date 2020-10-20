@@ -3,7 +3,7 @@ import * as gcp from "@pulumi/gcp";
 
 const config = new pulumi.Config();
 
-const appName = process.env.APP_NAME;
+const appName = config.require("app-name");
 
 // Enable required GCP APIs
 const enableCloudRunApi= new gcp.projects.Service("EnableCloudRunApi", {
