@@ -47,6 +47,12 @@ const serviceAccountIAM = new gcp.projects.IAMBinding("weather-api-cloud-run", {
     members: [pulumi.interpolate`serviceAccount:${cloudRunServiceAccount.email}`],
 }, {parent: cloudRunServiceAccount});
 
+const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding("weather-api-cloud-run", {
+    serviceAccountId: cloudRunServiceAccount.email,
+    members: [ "serviceAccount:dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
+    role: "roles/iam.serviceAccountUser"
+});
+
 // Deploy to Cloud Run if there is a difference in the sha, denoted above.
 const weatherApi = new gcp.cloudrun.Service("weather-api", {
     location,
