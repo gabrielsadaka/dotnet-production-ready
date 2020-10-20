@@ -62,6 +62,16 @@ containers:
       PULUMI_ACCESS_TOKEN: $PULUMI_ACCESS_TOKEN
       GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
     entrypoint: bash
+  gcloud-sdk:
+    image: google/cloud-sdk:314.0.0-alpine
+    volumes:
+      - local: .
+        container: /app
+        options: cached
+      - local: /var/run/docker.sock
+        container: /var/run/docker.sock
+    environment:
+      GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
 tasks:
   migrate-db:
     description: Run database migrations
@@ -94,7 +104,7 @@ tasks:
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:
-      container: pulumi
+      container: gcloud-sdk
       working_directory: /app
       command: infra/build-push.sh
   deploy:
