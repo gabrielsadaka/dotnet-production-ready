@@ -22,7 +22,7 @@ const gcrDockerProvider = new docker.Provider('gcr', {
 // Used to get the image from the google cloud registry.  Output is required to make sure that the provider is in sync with this call.
 const registryImage = pulumi.output(
     docker.getRegistryImage({
-    name: `gcr.io/${gcp.config.project}/${imageName}:latest`,
+    name: `gcr.io/${gcp.config.project}/${imageName}:${process.env.GITHUB_SHA}`,
 }, {provider: gcrDockerProvider}));
 
 

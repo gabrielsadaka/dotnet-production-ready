@@ -1,3 +1,0 @@
-name: dotnet-production-ready-build-image
-runtime: nodejs
-description: Build and push image to GCR

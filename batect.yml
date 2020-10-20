@@ -61,6 +61,7 @@ containers:
     environment:
       PULUMI_ACCESS_TOKEN: $PULUMI_ACCESS_TOKEN
       GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
+      GITHUB_SHA: $GITHUB_SHA
     entrypoint: bash
   gcloud-sdk:
     image: google/cloud-sdk:314.0.0-alpine
