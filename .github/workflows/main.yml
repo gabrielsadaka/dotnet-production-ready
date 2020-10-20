@@ -20,20 +20,27 @@ jobs:
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
-      - name: Deploy infra
+      - name: Deploy IAM
         run: ./batect deploy-infra
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.IAM_GOOGLE_CREDENTIALS }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.IAM_GOOGLE_SERVICE_ACCOUNT }}
 
-      - name: Build and push image
-        run: ./batect build-push-image
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-
-      - name: Deploy
-        run: ./batect deploy
-        env:
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+#      - name: Deploy infra
+#        run: ./batect deploy-infra
+#        env:
+#          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+#          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+#
+#      - name: Build and push image
+#        run: ./batect build-push-image
+#        env:
+#          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+#          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+#
+#      - name: Deploy
+#        run: ./batect deploy
+#        env:
+#          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+#          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}

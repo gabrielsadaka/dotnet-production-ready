@@ -59,10 +59,10 @@ containers:
       - local: /var/run/docker.sock
         container: /var/run/docker.sock
     environment:
-      PULUMI_ACCESS_TOKEN: $PULUMI_ACCESS_TOKEN
       GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
+      GOOGLE_SERVICE_ACCOUNT: $GOOGLE_SERVICE_ACCOUNT
+      PULUMI_ACCESS_TOKEN: $PULUMI_ACCESS_TOKEN
       GITHUB_SHA: $GITHUB_SHA
-      GOOGLE_SERVICE_ACCOUNT: dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com
     entrypoint: bash
   gcloud-sdk:
     image: google/cloud-sdk:314.0.0-alpine
@@ -98,6 +98,12 @@ tasks:
       command: dotnet test
     prerequisites:
       - migrate-db
+  deploy-iam:
+    description: Deploy IAM using Pulumi
+    run:
+      container: pulumi
+      working_directory: /app
+      command: infra/deploy-iam.sh
   deploy-infra:
     description: Deploy infra using Pulumi
     run:
