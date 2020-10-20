@@ -36,20 +36,20 @@ var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${imageName}-
 // String used to force the update using the new image.
 var truncatedSha = registryImage.sha256Digest.apply(d => imageName + "-" + d.substr(8,20));
 
-const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud-run", {
-    accountId: "weather-api",
-    description: "Weather API Cloud Run Service Account",
-    displayName: "Weather API Cloud Run"
+const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${imageName}-cloud-run`, {
+    accountId: `${imageName}-cloud-run`,
+    description: `${imageName} cloud run service account`,
+    displayName: `${imageName} cloud run`
 });
 
-const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding("weather-api-cloud-run", {
+const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${imageName}-cloud-run`, {
     serviceAccountId: cloudRunServiceAccount.name,
-    members: [ "serviceAccount:dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
+    members: [ `serviceAccount:${process.env.GOOGLE_SERVICE_ACCOUNT}` ],
     role: "roles/iam.serviceAccountUser"
 });
 
 // Deploy to Cloud Run if there is a difference in the sha, denoted above.
-const weatherApi = new gcp.cloudrun.Service("weather-api", {
+const weatherApi = new gcp.cloudrun.Service(`${imageName}`, {
     location,
     name: truncatedSha,
     template: {
@@ -63,7 +63,7 @@ const weatherApi = new gcp.cloudrun.Service("weather-api", {
 }, {dependsOn: dockerImage});
 
 // Open the service to public unrestricted access
-const iamWeatherApi = new gcp.cloudrun.IamMember("weather-api-everyone", {
+const iamWeatherApi = new gcp.cloudrun.IamMember(`${imageName}-everyone`, {
     service: weatherApi.name,
     location,
     role: "roles/run.invoker",
