@@ -2,12 +2,17 @@
 
 set -e
 
+cd deploy-iam
+
 echo "Restoring packages"
 
-npm --prefix infra/deploy-iam install infra/deploy-iam
+npm install
 
 echo "Applying changes"
 
-pulumi stack select dev -c --non-interactive --cwd infra/deploy-iam
+pulumi stack select dev -c --non-interactive
 
-pulumi up --stack dev --non-interactive --yes --cwd infra/deploy-iam
+pulumi config set gcp:project "$GOOGLE_PROJECT"
+pulumi config set gcp:region "$GOOGLE_REGION"
+
+pulumi up --stack dev --non-interactive --yes

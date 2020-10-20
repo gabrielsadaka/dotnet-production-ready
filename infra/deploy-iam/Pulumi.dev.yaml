@@ -1,4 +1,1 @@
 config:
-  gcp:project: dotnet-prod
-  gcp:region: australia-southeast1
-  dotnet-production-ready-deploy-iam:image-name: weather-api

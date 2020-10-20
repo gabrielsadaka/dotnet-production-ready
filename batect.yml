@@ -52,20 +52,25 @@ containers:
       - postgres
   pulumi:
     image: pulumi/pulumi:v2.12.0
+    working_directory: /app
     volumes:
-      - local: .
+      - local: infra
         container: /app
         options: cached
       - local: /var/run/docker.sock
         container: /var/run/docker.sock
     environment:
+      APP_NAME: $APP_NAME
       GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
       GOOGLE_SERVICE_ACCOUNT: $GOOGLE_SERVICE_ACCOUNT
+      GOOGLE_PROJECT: $GOOGLE_PROJECT
+      GOOGLE_REGION: $GOOGLE_REGION
       PULUMI_ACCESS_TOKEN: $PULUMI_ACCESS_TOKEN
       GITHUB_SHA: $GITHUB_SHA
     entrypoint: bash
   gcloud-sdk:
     image: google/cloud-sdk:314.0.0-alpine
+    working_directory: /app
     volumes:
       - local: .
         container: /app
@@ -73,7 +78,9 @@ containers:
       - local: /var/run/docker.sock
         container: /var/run/docker.sock
     environment:
+      APP_NAME: $APP_NAME
       GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
+      GOOGLE_PROJECT: $GOOGLE_PROJECT
       GITHUB_SHA: $GITHUB_SHA
 tasks:
   migrate-db:
@@ -98,29 +105,26 @@ tasks:
       command: dotnet test
     prerequisites:
       - migrate-db
+
   deploy-iam:
     description: Deploy IAM using Pulumi
     run:
       container: pulumi
-      working_directory: /app
-      command: infra/deploy-iam.sh
+      command: deploy-iam.sh
   deploy-infra:
     description: Deploy infra using Pulumi
     run:
       container: pulumi
-      working_directory: /app
-      command: infra/deploy-infra.sh
+      command: deploy-infra.sh
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:
       container: gcloud-sdk
-      working_directory: /app
       command: infra/build-push.sh
   deploy:
     description: Deploy Weather API to GCP Cloud Run using Pulumi
     run:
       container: pulumi
-      working_directory: /app
-      command: infra/deploy-app.sh
+      command: deploy-app.sh
       environment:
         GOOGLE_RUN_SERVICE_ACCOUNT: $GOOGLE_RUN_SERVICE_ACCOUNT

@@ -10,7 +10,7 @@ const config = new pulumi.Config();
 
 const configFile = config.require("docker-config-file");
 
-const imageName = config.require("image-name");
+const appName = process.env.APP_NAME;
 
 const gcrDockerProvider = new docker.Provider('gcr', {
     registryAuth: [{
@@ -22,22 +22,22 @@ const gcrDockerProvider = new docker.Provider('gcr', {
 // Used to get the image from the google cloud registry.  Output is required to make sure that the provider is in sync with this call.
 const registryImage = pulumi.output(
     docker.getRegistryImage({
-    name: `gcr.io/${gcp.config.project}/${imageName}:${process.env.GITHUB_SHA}`,
+    name: `gcr.io/${gcp.config.project}/${appName}:${process.env.GITHUB_SHA}`,
 }, {provider: gcrDockerProvider}));
 
 
 // Using the value from the registryImage to pull the image if it's new, pullTriggers looks for a new sha.
-var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${imageName}-docker-image`, {
+var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${appName}-docker-image`, {
     name: r.name!,
     pullTriggers: [registryImage.sha256Digest!],
     keepLocally: true
 }, {provider: gcrDockerProvider}));
 
 // String used to force the update using the new image.
-var truncatedSha = registryImage.sha256Digest.apply(d => imageName + "-" + d.substr(8,20));
+var truncatedSha = registryImage.sha256Digest.apply(d => appName + "-" + d.substr(8,20));
 
 // Deploy to Cloud Run if there is a difference in the sha, denoted above.
-const weatherApi = new gcp.cloudrun.Service(`${imageName}`, {
+const weatherApi = new gcp.cloudrun.Service(`${appName}`, {
     location,
     name: truncatedSha,
     template: {
@@ -51,7 +51,7 @@ const weatherApi = new gcp.cloudrun.Service(`${imageName}`, {
 }, {dependsOn: dockerImage});
 
 // Open the service to public unrestricted access
-const iamWeatherApi = new gcp.cloudrun.IamMember(`${imageName}-everyone`, {
+const iamWeatherApi = new gcp.cloudrun.IamMember(`${appName}-everyone`, {
     service: weatherApi.name,
     location,
     role: "roles/run.invoker",

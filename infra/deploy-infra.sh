@@ -2,12 +2,17 @@
 
 set -e
 
+cd deploy-infra
+
 echo "Restoring packages"
 
-npm --prefix infra/deploy-infra install infra/deploy-infra
+npm install
 
 echo "Applying changes"
 
-pulumi stack select dev -c --non-interactive --cwd infra/deploy-infra
+pulumi stack select dev -c --non-interactive
 
-pulumi up --stack dev --non-interactive --yes --cwd infra/deploy-infra
+pulumi config set gcp:project "$GOOGLE_PROJECT"
+pulumi config set gcp:region "$GOOGLE_REGION"
+
+pulumi up --stack dev --non-interactive --yes

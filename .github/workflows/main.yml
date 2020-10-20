@@ -1,6 +1,9 @@
 name: Build, Test and Deploy
 env:
   BATECT_ENABLE_TELEMETRY: true
+  GOOGLE_PROJECT: dotnet-prod
+  GOOGLE_REGION: australia-southeast1
+  APP_NAME: weather-api
 
 on:
   push:
