@@ -1,6 +1,10 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 
+const config = new pulumi.Config();
+
+const imageName = config.require("image-name");
+
 // Enable required GCP APIs
 const enableCloudRunApi= new gcp.projects.Service("EnableCloudRunApi", {
     service: "run.googleapis.com",
@@ -34,3 +38,12 @@ const cloudRunAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-run-admin`, 
     members: [pulumi.interpolate`serviceAccount:${ciServiceAccount.email}`],
     role: "roles/run.admin"
 }, {parent: ciServiceAccount});
+
+// Setup cloud run service account
+const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${imageName}-cloud-run`, {
+    accountId: `${imageName}-cloud-run`,
+    description: `${imageName} cloud run service account`,
+    displayName: `${imageName} cloud run`
+});
+
+export const cloudRunServiceAccountName = cloudRunServiceAccount.name;
