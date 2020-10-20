@@ -48,6 +48,6 @@ const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${imageName}-clou
 
 const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${imageName}-cloud-run`, {
     serviceAccountId: cloudRunServiceAccount.id,
-    members: [ `serviceAccount:${process.env.GOOGLE_SERVICE_ACCOUNT}` ],
+    members: [ pulumi.interpolate`serviceAccount:${ciServiceAccount.email}` ],
     role: "roles/iam.serviceAccountUser"
 });
