@@ -43,8 +43,8 @@ const cloudRunServiceAccount = new gcp.serviceaccount.Account("weather-api-cloud
 });
 
 const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding("weather-api-cloud-run", {
-    serviceAccountId: pulumi.interpolate`serviceAccounts:${cloudRunServiceAccount.email}`,
-    members: [ "serviceAccounts:dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
+    serviceAccountId: cloudRunServiceAccount.name,
+    members: [ "serviceAccount:dotnet-production-ready-svc@dotnetproductionready.iam.gserviceaccount.com" ],
     role: "roles/iam.serviceAccountUser"
 });
 
