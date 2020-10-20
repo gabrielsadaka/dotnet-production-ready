@@ -21,7 +21,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Deploy IAM
-        run: ./batect deploy-infra
+        run: ./batect deploy-iam
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GOOGLE_CREDENTIALS: ${{ secrets.IAM_GOOGLE_CREDENTIALS }}
