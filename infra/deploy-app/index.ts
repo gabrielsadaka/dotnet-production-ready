@@ -2,7 +2,6 @@
 
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
-import * as docker from "@pulumi/docker";
 
 const location = gcp.config.region || "australia-southeast1";
 
@@ -13,43 +12,18 @@ const appName = config.require("app-name");
 const gitSha = config.require("git-sha");
 const googleCloudRunServiceAccount = config.require("google-run-service-account");
 
-const gcrDockerProvider = new docker.Provider('gcr', {
-    registryAuth: [{
-        address: "gcr.io",
-        configFile: configFile
-    }],
-});
-
-// Used to get the image from the google cloud registry.  Output is required to make sure that the provider is in sync with this call.
-const registryImage = pulumi.output(
-    docker.getRegistryImage({
-    name: `gcr.io/${gcp.config.project}/${appName}:${gitSha}`,
-}, {provider: gcrDockerProvider}));
-
-
-// Using the value from the registryImage to pull the image if it's new, pullTriggers looks for a new sha.
-var dockerImage = registryImage.apply(r => new docker.RemoteImage(`${appName}-docker-image`, {
-    name: r.name!,
-    pullTriggers: [registryImage.sha256Digest!],
-    keepLocally: true
-}, {provider: gcrDockerProvider}));
-
-// String used to force the update using the new image.
-var truncatedSha = registryImage.sha256Digest.apply(d => appName + "-" + d.substr(8,20));
-
-// Deploy to Cloud Run if there is a difference in the sha, denoted above.
-const weatherApi = new gcp.cloudrun.Service(`${appName}`, {
+const weatherApi = new gcp.cloudrun.Service(appName, {
     location,
-    name: truncatedSha,
+    name: appName,
     template: {
         spec: {
             containers: [{
-                image: dockerImage.name,
+                image: `gcr.io/${gcp.config.project}/${appName}:${gitSha}`,
             }],
             serviceAccountName: googleCloudRunServiceAccount
         },
     },
-}, {dependsOn: dockerImage});
+});
 
 // Open the service to public unrestricted access
 const iamWeatherApi = new gcp.cloudrun.IamMember(`${appName}-everyone`, {
