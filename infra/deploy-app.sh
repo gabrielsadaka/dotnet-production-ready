@@ -10,8 +10,6 @@ npm install
 
 echo "Applying changes"
 
-echo $GOOGLE_CREDENTIALS | docker login -u _json_key --password-stdin https://gcr.io
-
 pulumi stack select dev -c --non-interactive
 
 pulumi config set gcp:project "$GOOGLE_PROJECT"
