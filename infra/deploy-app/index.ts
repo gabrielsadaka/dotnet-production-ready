@@ -5,10 +5,10 @@ const location = gcp.config.region || "australia-southeast1";
 
 const config = new pulumi.Config();
 
-const configFile = config.require("docker-config-file");
-const appName = config.require("app-name");
-const gitSha = config.require("git-sha");
-const googleCloudRunServiceAccount = config.require("google-run-service-account");
+const configFile = config.require("dockerConfigFile");
+const appName = config.require("appName");
+const gitSha = config.require("gitSha");
+const googleCloudRunServiceAccount = config.require("googleRunServiceAccount");
 
 const weatherApi = new gcp.cloudrun.Service(appName, {
     location,

@@ -1,3 +1,16 @@
 name: dotnet-prod-deploy-infra
 runtime: nodejs
 description: Dotnet Production Ready Deploy Infra
+template:
+  config:
+    gcp:project:
+      description: The Google Cloud project to deploy into
+    gcp:region:
+      description: The Google Cloud region
+    appName:
+      description: Application name
+    dbUsername:
+      description: Database username
+    dbPassword:
+      description: Database password
+      secret: true

@@ -1,2 +1,2 @@
 config:
-  dotnet-prod-deploy-app:docker-config-file: ~/.docker/config.json
+  dotnet-prod-deploy-app:dockerConfigFile: ~/.docker/config.json

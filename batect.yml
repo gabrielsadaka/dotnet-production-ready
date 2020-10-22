@@ -51,7 +51,7 @@ containers:
     dependencies:
       - postgres
   pulumi:
-    image: pulumi/pulumi:v2.12.0
+    image: pulumi/pulumi:v2.12.1
     working_directory: /app
     volumes:
       - local: infra
@@ -116,6 +116,9 @@ tasks:
     run:
       container: pulumi
       command: deploy-infra.sh
+      environment:
+        DB_USERNAME: $DB_USERNAME
+        DB_PASSWORD: $DB_PASSWORD
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:

@@ -1,3 +1,17 @@
 name: dotnet-prod-deploy-app
 runtime: nodejs
 description: Deploy image from GCR to GCP Cloud Run
+template:
+  config:
+    gcp:project:
+      description: The Google Cloud project to deploy into
+    gcp:region:
+      description: The Google Cloud region
+    appName:
+      description: Application name
+    gitSha:
+      description: git SHA of commit being deployed
+    dockerConfigFile:
+      description: Path to docker config file
+    googleRunServiceAccount:
+      description: Google Run Service Account Email

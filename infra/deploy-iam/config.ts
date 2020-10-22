@@ -3,4 +3,4 @@ import * as gcp from "@pulumi/gcp";
 
 const config = new pulumi.Config();
 
-export const appName = config.require("app-name");
+export const appName = config.require("appName");

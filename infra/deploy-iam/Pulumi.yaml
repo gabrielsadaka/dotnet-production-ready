@@ -1,3 +1,11 @@
 name: dotnet-prod-deploy-iam
 runtime: nodejs
 description: Dotnet Production Ready Deploy IAM
+template:
+  config:
+    gcp:project:
+      description: The Google Cloud project to deploy into
+    gcp:region:
+      description: The Google Cloud region
+    appName:
+      description: Application name

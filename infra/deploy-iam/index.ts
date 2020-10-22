@@ -22,6 +22,11 @@ const cloudRunAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-run-admin`, 
     role: "roles/run.admin"
 }, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
 
+const cloudSqlAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-cloud-sql-admin`, {
+    members: [ciServiceAccountEmail],
+    role: "roles/cloudsql.admin"
+}, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
+
 // Setup cloud run service account
 const appName = config.appName;
 
@@ -31,8 +36,13 @@ const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${appName}-cloud-
     displayName: `${appName} cloud run`
 }, {dependsOn: enableGcpApis.enableIamApi});
 
-const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${appName}-cloud-run`, {
+const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${appName}-cloud-run-ci-act-as-user`, {
     serviceAccountId: cloudRunServiceAccount.id,
     members: [ ciServiceAccountEmail ],
     role: "roles/iam.serviceAccountUser"
-}, {dependsOn: enableGcpApis.enableIamApi});
+}, {parent: cloudRunServiceAccount, dependsOn: enableGcpApis.enableIamApi});
+
+const cloudRunServiceAccountSqlClientIamBinding = new gcp.projects.IAMBinding(`${appName}-cloud-run-cloud-sql`, {
+    members: [pulumi.interpolate`serviceAccount:${cloudRunServiceAccount.email}`],
+    role: "roles/cloudsql.client"
+}, {parent: cloudRunServiceAccount, dependsOn: enableGcpApis.enableIamApi});

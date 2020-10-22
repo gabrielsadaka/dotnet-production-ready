@@ -16,3 +16,7 @@ export const enableCloudResourceManagerApi = new gcp.projects.Service("EnableClo
 export const enableContainerRegistryApi = new gcp.projects.Service("EnableContainerRegistryApi", {
     service: "containerregistry.googleapis.com",
 });
+
+export const enableSqlAdminApi = new gcp.projects.Service("EnableSqlAdminApi", {
+    service: "sqladmin.googleapis.com",
+});
