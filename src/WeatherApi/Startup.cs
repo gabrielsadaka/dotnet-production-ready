@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Npgsql;
 using WeatherApi.Data;
 using WeatherApi.Data.Repositories;
@@ -29,12 +28,6 @@ namespace WeatherApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            using var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder.AddConsole();
-                builder.SetMinimumLevel(LogLevel.Information);
-            });
-            var logger = loggerFactory.CreateLogger("Startup");
             services.AddControllers();
 
             services.AddScoped<IWeatherForecastsRepository, WeatherForecastsRepository>();
@@ -54,7 +47,6 @@ namespace WeatherApi
                 SslMode = SslMode.Disable,
                 Pooling = true
             };
-            logger.LogInformation($"Connecting to {connectionString.Host}");
 
             services.AddDbContext<WeatherContext>(options =>
                 options
