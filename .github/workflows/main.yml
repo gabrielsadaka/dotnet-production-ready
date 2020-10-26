@@ -60,3 +60,4 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_RUN_SERVICE_ACCOUNT: weather-api-cloud-run@dotnet-prod.iam.gserviceaccount.com
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
