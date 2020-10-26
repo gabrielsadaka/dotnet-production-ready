@@ -21,4 +21,9 @@ const databaseUser = new gcp.sql.User(`${config.appName}-db-user`, {
     password: config.dbPassword,
 });
 
+const database = new gcp.sql.Database(`${config.appName}-db`, {
+    name: config.dbName,
+    instance: databaseInstance.id
+});
+
 export const registryUrn = registry.urn;

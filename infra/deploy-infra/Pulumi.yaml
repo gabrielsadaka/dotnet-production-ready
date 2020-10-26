@@ -9,6 +9,8 @@ template:
       description: The Google Cloud region
     appName:
       description: Application name
+    dbName:
+      description: Database name
     dbUsername:
       description: Database username
     dbPassword:

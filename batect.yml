@@ -120,6 +120,7 @@ tasks:
       container: pulumi
       command: deploy-infra.sh
       environment:
+        DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
         DB_PASSWORD: $DB_PASSWORD
   migrate-db:
@@ -133,7 +134,7 @@ tasks:
         GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
         DB_INSTANCE: weather-api-db-ccb0940
         DB_HOST: localhost
-        DB_NAME: weather_db
+        DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
         DB_PASSWORD: $DB_PASSWORD
   build-push-image:
