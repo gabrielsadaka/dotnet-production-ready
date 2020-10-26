@@ -10,6 +10,7 @@ using Npgsql;
 using WeatherApi.Data;
 using WeatherApi.Data.Repositories;
 using WeatherApi.Exceptions;
+using WeatherApi.Infrastructure.ServiceCollectionExtensions;
 using WeatherApi.Services;
 
 namespace WeatherApi
@@ -30,28 +31,9 @@ namespace WeatherApi
         {
             services.AddControllers();
 
-            services.AddScoped<IWeatherForecastsRepository, WeatherForecastsRepository>();
             services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
 
-            var dbSettings = Configuration.GetSection("WEATHERDB");
-            var dbSocketDir = dbSettings["SOCKET_PATH"];
-            var instanceConnectionName = dbSettings["INSTANCE_CONNECTION_NAME"];
-            var connectionString = new NpgsqlConnectionStringBuilder
-            {
-                Host = !string.IsNullOrEmpty(dbSocketDir)
-                    ? $"{dbSocketDir}/{instanceConnectionName}"
-                    : dbSettings["HOST"],
-                Username = dbSettings["USER"],
-                Password = dbSettings["PASSWORD"],
-                Database = dbSettings["NAME"],
-                SslMode = SslMode.Disable,
-                Pooling = true
-            };
-
-            services.AddDbContext<WeatherContext>(options =>
-                options
-                    .UseNpgsql(connectionString.ToString())
-                    .UseSnakeCaseNamingConvention());
+            services.ConfigureDataAccess(Configuration);
 
             services.AddProblemDetails(opts =>
             {
