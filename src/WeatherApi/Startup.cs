@@ -32,6 +32,7 @@ namespace WeatherApi
             using var loggerFactory = LoggerFactory.Create(builder =>
             {
                 builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Information);
             });
             var logger = loggerFactory.CreateLogger("Startup");
             services.AddControllers();
