@@ -41,15 +41,9 @@ containers:
         container: /scripts
         options: cached
     environment:
-      HOST: postgres
-      PORT: "5432"
-      USERNAME: weather_user
-      PASSWORD: $POSTGRES_PASSWORD
-      DATABASE_NAME: weather_db
-      SCHEMA_NAME: public
-      MIGRATIONS_LOCATION: filesystem:/migrations
-    dependencies:
-      - postgres
+      DB_PORT: "5432"
+      DB_SCHEMA_NAME: public
+      DB_MIGRATIONS_LOCATION: filesystem:/migrations
   pulumi:
     image: pulumi/pulumi:v2.12.1
     working_directory: /app
@@ -83,13 +77,22 @@ containers:
       GOOGLE_PROJECT: $GOOGLE_PROJECT
       GITHUB_SHA: $GITHUB_SHA
 tasks:
-  migrate-db:
-    description: Run database migrations
+  migrate-integration-test-db:
+    description: Run database migrations for integration tests
+    dependencies:
+      - postgres
     run:
       container: flyway-migrator
       entrypoint: /scripts/run-migrations.sh
+      environment:
+        DB_HOST: postgres
+        DB_USERNAME: weather_user
+        DB_PASSWORD: $POSTGRES_PASSWORD
+        DB_NAME: weather_db
   start-integration-test-db:
     description: Start DB with migrations applied for locally running integration tests
+    dependencies:
+      - postgres
     run:
       container: flyway-migrator
       entrypoint: /scripts/run-migrations-keep-alive.sh
@@ -104,7 +107,7 @@ tasks:
       container: build-env
       command: dotnet test
     prerequisites:
-      - migrate-db
+      - migrate-integration-test-db
 
   deploy-iam:
     description: Deploy IAM using Pulumi
@@ -117,6 +120,20 @@ tasks:
       container: pulumi
       command: deploy-infra.sh
       environment:
+        DB_USERNAME: $DB_USERNAME
+        DB_PASSWORD: $DB_PASSWORD
+  migrate-db:
+    description: Run database migrations
+    run:
+      container: flyway-migrator
+      entrypoint: /scripts/run-migrations-gcloud.sh
+      environment:
+        GOOGLE_PROJECT: $GOOGLE_PROJECT
+        GOOGLE_REGION: $GOOGLE_REGION
+        GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
+        DB_INSTANCE: weather-api-db-ccb0940
+        DB_HOST: localhost
+        DB_NAME: weather_db
         DB_USERNAME: $DB_USERNAME
         DB_PASSWORD: $DB_PASSWORD
   build-push-image:
