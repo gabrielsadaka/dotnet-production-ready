@@ -41,16 +41,16 @@ namespace WeatherApi
             services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
 
             var dbSettings = Configuration.GetSection("WEATHERDB");
-            var dbSocketDir = dbSettings["SocketPath"];
-            var instanceConnectionName = dbSettings["InstanceConnectionName"];
+            var dbSocketDir = dbSettings["SOCKET_PATH"];
+            var instanceConnectionName = dbSettings["INSTANCE_CONNECTION_NAME"];
             var connectionString = new NpgsqlConnectionStringBuilder
             {
                 Host = !string.IsNullOrEmpty(dbSocketDir)
                     ? $"{dbSocketDir}/{instanceConnectionName}"
-                    : dbSettings["Host"],
-                Username = dbSettings["User"],
-                Password = dbSettings["Password"],
-                Database = dbSettings["Name"],
+                    : dbSettings["HOST"],
+                Username = dbSettings["USER"],
+                Password = dbSettings["PASSWORD"],
+                Database = dbSettings["NAME"],
                 SslMode = SslMode.Disable,
                 Pooling = true
             };
