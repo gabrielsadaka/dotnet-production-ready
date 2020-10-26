@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 using WeatherApi.Data;
 using WeatherApi.Data.Repositories;
 using WeatherApi.Exceptions;
@@ -15,14 +16,14 @@ namespace WeatherApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
         {
             Configuration = configuration;
-            Environment = environment;
+            WebHostEnvironment = webHostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
+        public IWebHostEnvironment WebHostEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -33,16 +34,28 @@ namespace WeatherApi
             services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
 
             var dbSettings = Configuration.GetSection("WEATHERDB");
+            var dbSocketDir = dbSettings["SocketPath"];
+            var instanceConnectionName = dbSettings["InstanceConnectionName"];
+            var connectionString = new NpgsqlConnectionStringBuilder
+            {
+                Host = !string.IsNullOrEmpty(dbSocketDir)
+                    ? $"{dbSocketDir}/{instanceConnectionName}"
+                    : dbSettings["Host"],
+                Username = dbSettings["User"],
+                Password = dbSettings["Password"],
+                Database = dbSettings["Name"],
+                SslMode = SslMode.Disable,
+                Pooling = true
+            };
             services.AddDbContext<WeatherContext>(options =>
                 options
-                    .UseNpgsql(
-                        $"Host={dbSettings["HOST"]};Database={dbSettings["DB"]};Username={dbSettings["USER"]};Password={dbSettings["PASSWORD"]}")
+                    .UseNpgsql(connectionString.ToString())
                     .UseSnakeCaseNamingConvention());
 
             services.AddProblemDetails(opts =>
             {
-                opts.ShouldLogUnhandledException = (ctx, ex, pb) => Environment.IsDevelopment();
-                opts.IncludeExceptionDetails = (ctx, ex) => Environment.IsDevelopment();
+                opts.ShouldLogUnhandledException = (ctx, ex, pb) => WebHostEnvironment.IsDevelopment();
+                opts.IncludeExceptionDetails = (ctx, ex) => WebHostEnvironment.IsDevelopment();
                 opts.MapToStatusCode<NotFoundException>(StatusCodes.Status404NotFound);
             });
         }

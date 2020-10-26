@@ -33,9 +33,9 @@ namespace WeatherApi.Tests.IntegrationTests
                 {
                     InitializeDbForTests(db);
                 }
-                #pragma warning disable CA1031
+#pragma warning disable CA1031
                 catch (Exception ex)
-                #pragma warning restore CA1031
+#pragma warning restore CA1031
                 {
                     logger.LogError(ex, "An error occurred seeding the " +
                                         "database with test messages. Error: {Message}", ex.Message);

@@ -54,7 +54,8 @@ namespace WeatherApi.Tests.IntegrationTests
 
             Assert.Equal(city, responseObj?.GetProperty("city").ToString());
             Assert.Equal(forecastDate, responseObj?.GetProperty("forecastDate").ToString());
-            Assert.Equal(23.35m, decimal.Parse(responseObj?.GetProperty("forecast").ToString()!, CultureInfo.InvariantCulture));
+            Assert.Equal(23.35m,
+                decimal.Parse(responseObj?.GetProperty("forecast").ToString()!, CultureInfo.InvariantCulture));
         }
 
         [Fact]
