@@ -132,7 +132,7 @@ tasks:
         GOOGLE_PROJECT: $GOOGLE_PROJECT
         GOOGLE_REGION: $GOOGLE_REGION
         GOOGLE_CREDENTIALS: $GOOGLE_CREDENTIALS
-        DB_INSTANCE: weather-api-db-ccb0940
+        DB_INSTANCE: $DB_INSTANCE
         DB_HOST: localhost
         DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
@@ -149,3 +149,4 @@ tasks:
       command: deploy-app.sh
       environment:
         GOOGLE_RUN_SERVICE_ACCOUNT: $GOOGLE_RUN_SERVICE_ACCOUNT
+        DB_INSTANCE: $DB_INSTANCE

@@ -9,6 +9,7 @@ const configFile = config.require("dockerConfigFile");
 const appName = config.require("appName");
 const gitSha = config.require("gitSha");
 const googleCloudRunServiceAccount = config.require("googleRunServiceAccount");
+const dbInstance = config.require("dbInstance");
 
 const weatherApi = new gcp.cloudrun.Service(appName, {
     location,
@@ -20,6 +21,12 @@ const weatherApi = new gcp.cloudrun.Service(appName, {
             }],
             serviceAccountName: googleCloudRunServiceAccount
         },
+        metadata: {
+            annotations: {
+                "autoscaling.knative.dev/maxScale": "2",
+                "run.googleapis.com/cloudsql-instances": `${gcp.config.project}:${gcp.config.region}:${dbInstance}`,
+            }
+        }
     },
 });
 
