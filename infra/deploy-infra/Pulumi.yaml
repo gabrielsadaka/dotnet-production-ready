@@ -13,6 +13,3 @@ template:
       description: Database name
     dbUsername:
       description: Database username
-    dbPassword:
-      description: Database password
-      secret: true

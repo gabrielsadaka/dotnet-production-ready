@@ -20,7 +20,6 @@ pulumi config set dotnet-prod-deploy-app:googleRunServiceAccount "$GOOGLE_RUN_SE
 pulumi config set dotnet-prod-deploy-app:dbInstance "$DB_INSTANCE"
 pulumi config set dotnet-prod-deploy-app:dbName "$DB_NAME"
 pulumi config set dotnet-prod-deploy-app:dbUsername "$DB_USERNAME"
-pulumi config set dotnet-prod-deploy-app:dbPassword "$DB_PASSWORD" --secret
 
 
 pulumi up --stack dev --non-interactive --yes

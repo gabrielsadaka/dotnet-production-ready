@@ -39,13 +39,11 @@ jobs:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.CI_GOOGLE_SERVICE_ACCOUNT }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Migrate database
         run: ./batect migrate-db
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Build and push image
         run: ./batect build-push-image
@@ -60,4 +58,3 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
           GOOGLE_SERVICE_ACCOUNT: ${{ secrets.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_RUN_SERVICE_ACCOUNT: weather-api-cloud-run@dotnet-prod.iam.gserviceaccount.com
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}

@@ -15,3 +15,9 @@ template:
       description: Path to docker config file
     googleRunServiceAccount:
       description: Google Run Service Account Email
+    dbInstance:
+      description: Database instance name
+    dbName:
+      description: Database name
+    dbUsername:
+      description: Database username

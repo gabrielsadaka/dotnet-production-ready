@@ -1,29 +1,17 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as gcp from "@pulumi/gcp";
 import * as config from "./config";
+import * as database from "./database";
 
 const registry = new gcp.container.Registry("weather-registry");
 
-const databaseInstance = new gcp.sql.DatabaseInstance(`${config.appName}-db`, {
-    databaseVersion: "POSTGRES_12",
-    settings: {
-        tier: "db-f1-micro",
-        ipConfiguration: {
-            ipv4Enabled: true,
-            requireSsl: true
-        }
-    },
-});
-
-const databaseUser = new gcp.sql.User(`${config.appName}-db-user`, {
-    instance: databaseInstance.name,
-    name: config.dbUsername,
-    password: config.dbPassword,
-});
-
-const database = new gcp.sql.Database(`${config.appName}-db`, {
-    name: config.dbName,
-    instance: databaseInstance.id
+const databasePasswordSecret = new gcp.secretmanager.Secret(`${config.appName}-db-pass`, {
+    secretId: `${config.appName}-db-pass`,
+    replication: {
+        automatic: true
+    }
 });
 
 export const registryUrn = registry.urn;
+export const dbAddress = database.databaseInstance.firstIpAddress;
+export const dbName = database.database.name;

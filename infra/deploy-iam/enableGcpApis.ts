@@ -20,3 +20,7 @@ export const enableContainerRegistryApi = new gcp.projects.Service("EnableContai
 export const enableSqlAdminApi = new gcp.projects.Service("EnableSqlAdminApi", {
     service: "sqladmin.googleapis.com",
 });
+
+export const enableSecretManagerApi = new gcp.projects.Service("EnableSecretManagerApi", {
+    service: "secretmanager.googleapis.com",
+});

@@ -27,6 +27,11 @@ const cloudSqlAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-cloud-sql-ad
     role: "roles/cloudsql.admin"
 }, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
 
+const cloudSecretAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-cloud-secret-admin`, {
+    members: [ciServiceAccountEmail],
+    role: "roles/secretmanager.admin"
+}, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
+
 // Setup cloud run service account
 const appName = config.appName;
 

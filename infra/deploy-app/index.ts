@@ -12,7 +12,6 @@ const googleCloudRunServiceAccount = config.require("googleRunServiceAccount");
 const dbInstance = config.require("dbInstance");
 const dbName = config.require("dbName");
 const dbUsername = config.require("dbUsername");
-const dbPassword = config.require("dbPassword");
 
 const cloudSqlInstance = `${gcp.config.project}:${gcp.config.region}:${dbInstance}`;
 
@@ -39,10 +38,6 @@ const weatherApi = new gcp.cloudrun.Service(appName, {
                     {
                         name: "WEATHERDB__USER",
                         value: dbUsername
-                    },
-                    {
-                        name: "WEATHERDB__PASSWORD",
-                        value: dbPassword
                     }
                 ]
             }],
