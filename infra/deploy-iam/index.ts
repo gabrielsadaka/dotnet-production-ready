@@ -28,18 +28,20 @@ const cloudSqlAdminIamBinding = new gcp.projects.IAMBinding(`ci-svc-cloud-sql-ad
     role: "roles/cloudsql.admin"
 }, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
 
-const cloudSecretAccessorIamBinding = new gcp.secretmanager.SecretIamBinding(`ci-svc-${config.appName}-db-pass`, {
-    secretId: secrets.databasePasswordSecret.secretId,
-    members: [ciServiceAccountEmail],
-    role: "roles/secretmanager.secretAccessor"
-}, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
-
 // Setup cloud run service account
 const cloudRunServiceAccount = new gcp.serviceaccount.Account(`${config.appName}-cloud-run`, {
     accountId: `${config.appName}-cloud-run`,
     description: `${config.appName} cloud run service account`,
     displayName: `${config.appName} cloud run`
 }, {dependsOn: enableGcpApis.enableIamApi});
+
+const cloudRunServiceAccountEmail = pulumi.interpolate`serviceAccount:${cloudRunServiceAccount.email}`;
+
+const cloudSecretAccessorIamBinding = new gcp.secretmanager.SecretIamBinding(`${config.appName}-db-password-access`, {
+    secretId: secrets.databasePasswordSecret.secretId,
+    members: [ciServiceAccountEmail, cloudRunServiceAccountEmail],
+    role: "roles/secretmanager.secretAccessor"
+}, {parent: ciServiceAccount, dependsOn: enableGcpApis.enableIamApi});
 
 const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${config.appName}-cloud-run-ci-act-as-user`, {
     serviceAccountId: cloudRunServiceAccount.id,
@@ -48,6 +50,6 @@ const cloudRunServiceAccountBinding = new gcp.serviceaccount.IAMBinding(`${confi
 }, {parent: cloudRunServiceAccount, dependsOn: enableGcpApis.enableIamApi});
 
 const cloudRunServiceAccountSqlClientIamBinding = new gcp.projects.IAMBinding(`${config.appName}-cloud-run-cloud-sql`, {
-    members: [pulumi.interpolate`serviceAccount:${cloudRunServiceAccount.email}`],
+    members: [cloudRunServiceAccountEmail],
     role: "roles/cloudsql.client"
 }, {parent: cloudRunServiceAccount, dependsOn: enableGcpApis.enableIamApi});
