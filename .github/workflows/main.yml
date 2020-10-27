@@ -7,6 +7,7 @@ env:
   DB_INSTANCE: weather-api-db-ccb0940
   DB_NAME: weather_db
   DB_USERNAME: weather-api-user
+  DB_PASSWORD_SECRET_ID: weather-api-db-password
 
 on:
   push:

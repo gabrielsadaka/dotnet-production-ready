@@ -135,6 +135,7 @@ tasks:
         DB_HOST: localhost
         DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
+        DB_PASSWORD_SECRET_ID: $DB_PASSWORD_SECRET_ID
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:

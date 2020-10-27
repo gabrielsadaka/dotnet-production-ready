@@ -1,11 +1,16 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status.
 set -e
 
-echo "Connecting to Google Cloud SQL Proxy"
+echo "Getting database password from Google Cloud Secrets Manager"
 
 echo $GOOGLE_CREDENTIALS > keyfile.json
+
+gcloud auth activate-service-account --key-file keyfile.json
+
+DB_PASSWORD=$(gcloud secrets versions access 1 --project "$GOOGLE_PROJECT" --secret="$DB_PASSWORD_SECRET_ID")
+
+echo "Connecting to Google Cloud SQL Proxy"
 
 ./cloud_sql_proxy -credential_file keyfile.json -instances="$GOOGLE_PROJECT:$GOOGLE_REGION:$DB_INSTANCE"=tcp:"$DB_PORT" &
 
@@ -15,8 +20,6 @@ until PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USERNAME -d $DB_NAME -c "s
   sleep 1
 done
 
-echo "Google Cloud Run Proxy ready, running migrations"
+echo "Google Cloud Run Proxy ready, running migrations using flyway"
 
-# migrate the database
-echo "Flyway is running pending migrations -if any- on the database"
 flyway -url=jdbc:postgresql://"$DB_HOST":"$DB_PORT"/"$DB_NAME" -schemas="$DB_SCHEMA_NAME" -user="$DB_USERNAME" -password="$DB_PASSWORD" -locations="$DB_MIGRATIONS_LOCATION" migrate
