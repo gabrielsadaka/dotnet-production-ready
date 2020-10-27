@@ -21,3 +21,7 @@ template:
       description: Database name
     dbUsername:
       description: Database username
+    dbPasswordSecretId:
+      description: Database password secret ID
+    dbPasswordSecretVersion:
+      description: Database password secret version

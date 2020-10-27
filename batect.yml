@@ -136,6 +136,7 @@ tasks:
         DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
         DB_PASSWORD_SECRET_ID: $DB_PASSWORD_SECRET_ID
+        DB_PASSWORD_SECRET_VERSION: $DB_PASSWORD_SECRET_VERSION
   build-push-image:
     description: Build and push docker image to GCR using Pulumi
     run:
@@ -151,3 +152,5 @@ tasks:
         DB_INSTANCE: $DB_INSTANCE
         DB_NAME: $DB_NAME
         DB_USERNAME: $DB_USERNAME
+        DB_PASSWORD_SECRET_ID: $DB_PASSWORD_SECRET_ID
+        DB_PASSWORD_SECRET_VERSION: $DB_PASSWORD_SECRET_VERSION

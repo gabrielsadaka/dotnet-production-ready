@@ -8,7 +8,7 @@ echo $GOOGLE_CREDENTIALS > keyfile.json
 
 gcloud auth activate-service-account --key-file keyfile.json
 
-DB_PASSWORD=$(gcloud secrets versions access 1 --project "$GOOGLE_PROJECT" --secret="$DB_PASSWORD_SECRET_ID")
+DB_PASSWORD=$(gcloud secrets versions access "$DB_PASSWORD_SECRET_VERSION" --project "$GOOGLE_PROJECT" --secret="$DB_PASSWORD_SECRET_ID")
 
 echo "Connecting to Google Cloud SQL Proxy"
 

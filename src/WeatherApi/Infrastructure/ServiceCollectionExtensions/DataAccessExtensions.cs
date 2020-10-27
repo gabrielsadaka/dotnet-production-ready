@@ -1,4 +1,5 @@
 using System;
+using Google.Cloud.SecretManager.V1;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,13 +25,14 @@ namespace WeatherApi.Infrastructure.ServiceCollectionExtensions
             var dbSettings = configuration.GetSection("WEATHERDB");
             var dbSocketDir = dbSettings["SOCKET_PATH"];
             var instanceConnectionName = dbSettings["INSTANCE_CONNECTION_NAME"];
+            var databasePasswordSecret = GetDatabasePasswordSecret(dbSettings);
             var connectionString = new NpgsqlConnectionStringBuilder
             {
                 Host = !string.IsNullOrEmpty(dbSocketDir)
                     ? $"{dbSocketDir}/{instanceConnectionName}"
                     : dbSettings["HOST"],
                 Username = dbSettings["USER"],
-                Password = dbSettings["PASSWORD"],
+                Password = databasePasswordSecret,
                 Database = dbSettings["NAME"],
                 SslMode = SslMode.Disable,
                 Pooling = true
@@ -40,6 +42,24 @@ namespace WeatherApi.Infrastructure.ServiceCollectionExtensions
                 options
                     .UseNpgsql(connectionString.ToString())
                     .UseSnakeCaseNamingConvention());
+        }
+
+        private static string GetDatabasePasswordSecret(IConfiguration dbSettings)
+        {
+            var googleProject = Environment.GetEnvironmentVariable("GOOGLE_PROJECT");
+
+            if (string.IsNullOrEmpty(googleProject)) return dbSettings["PASSWORD"];
+
+            var dbPasswordSecretId = dbSettings["PASSWORD_SECRET_ID"];
+            var dbPasswordSecretVersion = dbSettings["PASSWORD_SECRET_VERSION"];
+
+            var client = SecretManagerServiceClient.Create();
+
+            var secretVersionName = new SecretVersionName(googleProject, dbPasswordSecretId, dbPasswordSecretVersion);
+
+            var result = client.AccessSecretVersion(secretVersionName);
+
+            return result.Payload.Data.ToStringUtf8();
         }
     }
 }
