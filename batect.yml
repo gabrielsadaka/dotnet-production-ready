@@ -140,11 +140,16 @@ tasks:
         DB_USERNAME: $DB_USERNAME
         DB_PASSWORD_SECRET_ID: $DB_PASSWORD_SECRET_ID
         DB_PASSWORD_SECRET_VERSION: $DB_PASSWORD_SECRET_VERSION
-  build-push-image:
-    description: Build and push docker image to GCR using Pulumi
+  build-scan-image:
+    description: Build and scan docker image for vulnerabilities
     run:
       container: gcloud-sdk
-      command: infra/build-push.sh
+      command: infra/build-scan-image.sh
+  push-image:
+    description: Push docker image to GCR
+    run:
+      container: gcloud-sdk
+      command: infra/push-image.sh
   deploy:
     description: Deploy Weather API to GCP Cloud Run using Pulumi
     run:
