@@ -1,6 +1,6 @@
-name: dotnet-prod-deploy-iam
+name: weather-api-dev-deploy-iam
 runtime: nodejs
-description: Dotnet Production Ready Deploy IAM
+description: Deploy IAM
 template:
   config:
     gcp:project:

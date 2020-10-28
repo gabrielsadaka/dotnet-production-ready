@@ -1,5 +1,5 @@
 {
-    "name": "dotnet-prod-deploy-infra",
+    "name": "weather-api-dev-deploy-infra",
     "devDependencies": {
         "@types/node": "^10.0.0"
     },

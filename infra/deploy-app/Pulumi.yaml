@@ -1,4 +1,4 @@
-name: dotnet-prod-deploy-app
+name: weather-api-dev-deploy-app
 runtime: nodejs
 description: Deploy image from GCR to GCP Cloud Run
 template:

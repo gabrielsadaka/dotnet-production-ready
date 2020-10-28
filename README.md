@@ -39,7 +39,10 @@
 
 1. Fork repository
 2. Create new Google Cloud Project
-    * `gcloud projects create [project-name]`
+    * ```
+      gcloud projects create [project-name]
+      gcloud config set project [project-name]
+      ```
 2. Create IAM service account
     * `gcloud iam service-accounts create iam-svc`
 3. Assign required roles to IAM service account
@@ -55,13 +58,15 @@
     1. `PULUMI_ACCESS_TOKEN` - Set to your access token for your Pulumi account
     2. `POSTGRES_PASSWORD` - Choose a random password for the integration test database
     3. `IAM_GOOGLE_CREDENTIALS` - Set to the contents of the keyfile generated in the previous step
+    4. Remove the generated keyfile
 7. Commit a change to update the environment variables in `.github/workflows/main.yml` to match new project details
 7. Commit a change to update the files in infra folder to match new project details
 8. Run the GitHub actions workflow - it should fail at the Deploy Infra step failing to authenticate the newly created CI account
 9. Generate keyfile for CI service account
     * `gcloud iam service-accounts keys create keyfile.json --iam-account ci-svc@[project-name].iam.gserviceaccount.com`
 10. Set GitHub Action secrets
-    1. `CI_GOOGLE_CREDENTIALS` - Set to the contents of the keyfile generated in the previous step 
+    1. `CI_GOOGLE_CREDENTIALS` - Set to the contents of the keyfile generated in the previous step
+    2. Remove the generated keyfile
 11. Run the GitHub actions workflow - it should fail at the Migrate Database step failing to authenticate the newly created database instance
 12. Commit a change to update the `src/WeatherApi/appsettings.dev.json` to match the database details
 13. Create a secret in GCP secret manager to store the database password

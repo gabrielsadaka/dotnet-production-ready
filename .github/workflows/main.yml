@@ -1,15 +1,15 @@
 name: Build, Test and Deploy
 env:
   BATECT_ENABLE_TELEMETRY: true
-  GOOGLE_PROJECT: dotnet-prod
+  GOOGLE_PROJECT: weather-api-dev
   GOOGLE_REGION: australia-southeast1
   APP_NAME: weather-api
   DB_INSTANCE: weather-api-db
   DB_NAME: weather_db
   DB_USERNAME: weather-api-user
   ENVIRONMENT: dev
-  IAM_GOOGLE_SERVICE_ACCOUNT: iam-svc@dotnet-prod.iam.gserviceaccount.com
-  CI_GOOGLE_SERVICE_ACCOUNT: ci-svc@dotnet-prod.iam.gserviceaccount.com
+  IAM_GOOGLE_SERVICE_ACCOUNT: iam-svc@weather-api-dev.iam.gserviceaccount.com
+  CI_GOOGLE_SERVICE_ACCOUNT: ci-svc@weather-api-dev.iam.gserviceaccount.com
 
 on:
   push:
@@ -62,4 +62,4 @@ jobs:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           GOOGLE_SERVICE_ACCOUNT: ${{ env.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
-          GOOGLE_RUN_SERVICE_ACCOUNT: weather-api-cloud-run@dotnet-prod.iam.gserviceaccount.com
+          GOOGLE_RUN_SERVICE_ACCOUNT: weather-api-cloud-run@weather-api-dev.iam.gserviceaccount.com

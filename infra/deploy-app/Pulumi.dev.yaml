@@ -1,2 +1,2 @@
 config:
-  dotnet-prod-deploy-app:dockerConfigFile: ~/.docker/config.json
+  weather-api-dev-deploy-app:dockerConfigFile: ~/.docker/config.json

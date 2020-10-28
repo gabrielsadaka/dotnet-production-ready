@@ -1,6 +1,6 @@
-name: dotnet-prod-deploy-infra
+name: weather-api-dev-deploy-infra
 runtime: nodejs
-description: Dotnet Production Ready Deploy Infra
+description: Deploy Infra
 template:
   config:
     gcp:project:
