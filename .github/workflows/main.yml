@@ -4,7 +4,7 @@ env:
   GOOGLE_PROJECT: dotnet-prod
   GOOGLE_REGION: australia-southeast1
   APP_NAME: weather-api
-  DB_INSTANCE: weather-api-db-ccb0940
+  DB_INSTANCE: weather-api-db
   DB_NAME: weather_db
   DB_USERNAME: weather-api-user
   ENVIRONMENT: dev
