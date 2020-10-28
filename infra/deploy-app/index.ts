@@ -29,6 +29,10 @@ const weatherApi = new gcp.cloudrun.Service(appName, {
                     {
                         name: "ASPNETCORE_ENVIRONMENT",
                         value: environment
+                    },
+                    {
+                        name: "PORT",
+                        value: "8080"
                     }
                 ],
                 ports: [

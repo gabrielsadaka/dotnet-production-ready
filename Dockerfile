@@ -16,6 +16,4 @@ COPY --from=build /app/out ./
 RUN useradd -d /home/dotnet-user -m -s /bin/bash dotnet-user
 USER dotnet-user
 
-ENV PORT=8080
-
 ENTRYPOINT ["dotnet", "WeatherApi.dll"]
