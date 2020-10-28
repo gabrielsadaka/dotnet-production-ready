@@ -20,5 +20,5 @@ pulumi config set weather-api-dev-deploy-app:googleRunServiceAccount "$GOOGLE_RU
 pulumi config set weather-api-dev-deploy-app:dbInstance "$DB_INSTANCE"
 pulumi config set weather-api-dev-deploy-app:environment "$ENVIRONMENT"
 
-
+pulumi refresh --yes
 pulumi up --stack dev --non-interactive --yes
