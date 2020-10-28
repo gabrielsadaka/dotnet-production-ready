@@ -10,10 +10,7 @@ const appName = config.require("appName");
 const gitSha = config.require("gitSha");
 const googleCloudRunServiceAccount = config.require("googleRunServiceAccount");
 const dbInstance = config.require("dbInstance");
-const dbName = config.require("dbName");
-const dbUsername = config.require("dbUsername");
-const dbPasswordSecretId = config.require("dbPasswordSecretId");
-const dbPasswordSecretVersion = config.require("dbPasswordSecretVersion");
+const environment = config.require("environment");
 
 const cloudSqlInstance = `${gcp.config.project}:${gcp.config.region}:${dbInstance}`;
 
@@ -30,28 +27,8 @@ const weatherApi = new gcp.cloudrun.Service(appName, {
                         value: gcp.config.project
                     },
                     {
-                        name: "WEATHERDB__SOCKET_PATH",
-                        value: "/cloudsql"
-                    },
-                    {
-                        name: "WEATHERDB__INSTANCE_CONNECTION_NAME",
-                        value: cloudSqlInstance
-                    },
-                    {
-                        name: "WEATHERDB__NAME",
-                        value: dbName
-                    },
-                    {
-                        name: "WEATHERDB__USER",
-                        value: dbUsername
-                    },
-                    {
-                        name: "WEATHERDB__PASSWORD_SECRET_ID",
-                        value: dbPasswordSecretId
-                    },
-                    {
-                        name: "WEATHERDB__PASSWORD_SECRET_VERSION",
-                        value: dbPasswordSecretVersion
+                        name: "ASPNETCORE_ENVIRONMENT",
+                        value: environment
                     }
                 ]
             }],

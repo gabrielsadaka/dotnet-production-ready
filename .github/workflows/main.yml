@@ -7,8 +7,7 @@ env:
   DB_INSTANCE: weather-api-db-ccb0940
   DB_NAME: weather_db
   DB_USERNAME: weather-api-user
-  DB_PASSWORD_SECRET_ID: weather-api-db-password
-  DB_PASSWORD_SECRET_VERSION: 1
+  ENVIRONMENT: dev
 
 on:
   push:
@@ -46,6 +45,8 @@ jobs:
         run: ./batect migrate-db
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
+          DB_PASSWORD_SECRET_ID: weather-api-db-password
+          DB_PASSWORD_SECRET_VERSION: 1
 
       - name: Build and push image
         run: ./batect build-push-image

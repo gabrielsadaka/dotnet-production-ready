@@ -22,18 +22,18 @@ namespace WeatherApi.Infrastructure.ServiceCollectionExtensions
 
         private static void ConfigureDbContext(IServiceCollection services, IConfiguration configuration)
         {
-            var dbSettings = configuration.GetSection("WEATHERDB");
-            var dbSocketDir = dbSettings["SOCKET_PATH"];
-            var instanceConnectionName = dbSettings["INSTANCE_CONNECTION_NAME"];
+            var dbSettings = configuration.GetSection("WeatherDb");
+            var dbSocketDir = dbSettings["SocketPath"];
+            var instanceConnectionName = dbSettings["InstanceConnectionName"];
             var databasePasswordSecret = GetDatabasePasswordSecret(dbSettings);
             var connectionString = new NpgsqlConnectionStringBuilder
             {
                 Host = !string.IsNullOrEmpty(dbSocketDir)
                     ? $"{dbSocketDir}/{instanceConnectionName}"
-                    : dbSettings["HOST"],
-                Username = dbSettings["USER"],
+                    : dbSettings["Host"],
+                Username = dbSettings["User"],
                 Password = databasePasswordSecret,
-                Database = dbSettings["NAME"],
+                Database = dbSettings["Name"],
                 SslMode = SslMode.Disable,
                 Pooling = true
             };
@@ -48,10 +48,10 @@ namespace WeatherApi.Infrastructure.ServiceCollectionExtensions
         {
             var googleProject = Environment.GetEnvironmentVariable("GOOGLE_PROJECT");
 
-            if (string.IsNullOrEmpty(googleProject)) return dbSettings["PASSWORD"];
+            if (string.IsNullOrEmpty(googleProject)) return dbSettings["Password"];
 
-            var dbPasswordSecretId = dbSettings["PASSWORD_SECRET_ID"];
-            var dbPasswordSecretVersion = dbSettings["PASSWORD_SECRET_VERSION"];
+            var dbPasswordSecretId = dbSettings["PasswordSecretId"];
+            var dbPasswordSecretVersion = dbSettings["PasswordSecretVersion"];
 
             var client = SecretManagerServiceClient.Create();
 

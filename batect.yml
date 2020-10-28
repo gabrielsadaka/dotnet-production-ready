@@ -16,9 +16,7 @@ containers:
         container: /code/src/WeatherApi.Tests/obj
     working_directory: /code
     environment:
-      WEATHERDB__HOST: postgres
-      WEATHERDB__DB: weather_db
-      WEATHERDB__USER: weather_user
+      ASPNETCORE_ENVIRONMENT: test
       WEATHERDB__PASSWORD: $POSTGRES_PASSWORD
     dependencies:
       - postgres
@@ -96,6 +94,11 @@ tasks:
     run:
       container: flyway-migrator
       entrypoint: /scripts/run-migrations-keep-alive.sh
+      environment:
+        DB_HOST: postgres
+        DB_USERNAME: weather_user
+        DB_PASSWORD: $POSTGRES_PASSWORD
+        DB_NAME: weather_db
   build:
     description: Build Weather API
     run:
@@ -150,7 +153,4 @@ tasks:
       environment:
         GOOGLE_RUN_SERVICE_ACCOUNT: $GOOGLE_RUN_SERVICE_ACCOUNT
         DB_INSTANCE: $DB_INSTANCE
-        DB_NAME: $DB_NAME
-        DB_USERNAME: $DB_USERNAME
-        DB_PASSWORD_SECRET_ID: $DB_PASSWORD_SECRET_ID
-        DB_PASSWORD_SECRET_VERSION: $DB_PASSWORD_SECRET_VERSION
+        ENVIRONMENT: $ENVIRONMENT

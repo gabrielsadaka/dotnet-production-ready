@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using WeatherApi.Data;
 using WeatherApi.Data.Entities;
@@ -13,6 +12,12 @@ namespace WeatherApi.Tests.IntegrationTests
     public class WeatherApiWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup : class
     {
+        protected override IHostBuilder CreateHostBuilder()
+        {
+            return base.CreateHostBuilder()
+                .UseEnvironment(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "local");
+        }
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             if (builder == null) throw new ArgumentNullException(nameof(builder));
@@ -40,18 +45,6 @@ namespace WeatherApi.Tests.IntegrationTests
                     logger.LogError(ex, "An error occurred seeding the " +
                                         "database with test messages. Error: {Message}", ex.Message);
                 }
-            });
-
-            builder.ConfigureAppConfiguration((context, configBuilder) =>
-            {
-                configBuilder.AddInMemoryCollection(new Dictionary<string, string>
-                {
-                    ["WeatherDb:Host"] = "localhost",
-                    ["WeatherDb:Db"] = "weather_db",
-                    ["WeatherDb:User"] = "weather_user"
-                });
-
-                configBuilder.AddEnvironmentVariables();
             });
         }
 

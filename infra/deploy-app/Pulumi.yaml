@@ -17,11 +17,5 @@ template:
       description: Google Run Service Account Email
     dbInstance:
       description: Database instance name
-    dbName:
-      description: Database name
-    dbUsername:
-      description: Database username
-    dbPasswordSecretId:
-      description: Database password secret ID
-    dbPasswordSecretVersion:
-      description: Database password secret version
+    environment:
+      description: Environment the app is being deployed to
