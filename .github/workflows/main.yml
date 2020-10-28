@@ -8,6 +8,8 @@ env:
   DB_NAME: weather_db
   DB_USERNAME: weather-api-user
   ENVIRONMENT: dev
+  IAM_GOOGLE_SERVICE_ACCOUNT: iam-svc@dotnet-prod.iam.gserviceaccount.com
+  CI_GOOGLE_SERVICE_ACCOUNT: ci-svc@dotnet-prod.iam.gserviceaccount.com
 
 on:
   push:
@@ -31,15 +33,15 @@ jobs:
         run: ./batect deploy-iam
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ env.IAM_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_CREDENTIALS: ${{ secrets.IAM_GOOGLE_CREDENTIALS }}
-          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.IAM_GOOGLE_SERVICE_ACCOUNT }}
 
       - name: Deploy infra
         run: ./batect deploy-infra
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ env.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
-          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.CI_GOOGLE_SERVICE_ACCOUNT }}
 
       - name: Migrate database
         run: ./batect migrate-db
@@ -58,6 +60,6 @@ jobs:
         run: ./batect deploy
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ env.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_CREDENTIALS: ${{ secrets.CI_GOOGLE_CREDENTIALS }}
-          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.CI_GOOGLE_SERVICE_ACCOUNT }}
           GOOGLE_RUN_SERVICE_ACCOUNT: weather-api-cloud-run@dotnet-prod.iam.gserviceaccount.com
