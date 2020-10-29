@@ -14,7 +14,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
 COPY --from=build /app/out ./
 
 RUN useradd -d /home/dotnet-user -m -s /bin/bash dotnet-user
-USER dotnet-user
+#USER dotnet-user
 
 ENV ASPNETCORE_URLS=http://+:8080
 
