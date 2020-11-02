@@ -1,12 +1,12 @@
 using System;
 using Hellang.Middleware.ProblemDetails;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherApi.Exceptions;
 using WeatherApi.Infrastructure.ServiceCollectionExtensions;
-using WeatherApi.Services;
 
 namespace WeatherApi
 {
@@ -24,9 +24,9 @@ namespace WeatherApi
         {
             services.AddControllers();
 
-            services.AddScoped<IWeatherForecastsService, WeatherForecastsService>();
-
             services.ConfigureDataAccess(Configuration);
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddProblemDetails(opts =>
             {

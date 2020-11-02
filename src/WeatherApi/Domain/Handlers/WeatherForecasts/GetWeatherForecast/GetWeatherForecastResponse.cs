@@ -1,10 +1,10 @@
 using System;
 
-namespace WeatherApi.Domain
+namespace WeatherApi.Domain.Handlers.WeatherForecasts.GetWeatherForecast
 {
-    public class WeatherForecast
+    public class GetWeatherForecastResponse
     {
-        public WeatherForecast(Guid id, string city, DateTimeOffset forecastDate, decimal forecast)
+        public GetWeatherForecastResponse(Guid id, string city, DateTimeOffset forecastDate, decimal forecast)
         {
             Id = id;
             City = city;

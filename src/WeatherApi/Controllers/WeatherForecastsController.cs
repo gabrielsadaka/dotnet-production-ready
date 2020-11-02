@@ -1,8 +1,9 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using WeatherApi.Services;
+using WeatherApi.Domain.Handlers.WeatherForecasts.AddWeatherForecast;
+using WeatherApi.Domain.Handlers.WeatherForecasts.GetWeatherForecast;
 
 namespace WeatherApi.Controllers
 {
@@ -10,17 +11,25 @@ namespace WeatherApi.Controllers
     [Route("/api/weather-forecasts")]
     public class WeatherForecastsController : ControllerBase
     {
-        private readonly IWeatherForecastsService _weatherForecastsService;
+        private readonly IMediator _mediator;
 
-        public WeatherForecastsController(IWeatherForecastsService weatherForecastsService)
+        public WeatherForecastsController(IMediator mediator)
         {
-            _weatherForecastsService = weatherForecastsService;
+            _mediator = mediator;
         }
 
-        public async Task<IActionResult> Get(string city, DateTimeOffset forecastDate, CancellationToken ct = default)
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] GetWeatherForecastQuery query, CancellationToken ct = default)
         {
-            var weatherForecast = await _weatherForecastsService.GetWeatherForecast(city, forecastDate, ct);
-            return Ok(weatherForecast);
+            var response = await _mediator.Send(query, ct);
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(AddWeatherForecastCommand command, CancellationToken ct = default)
+        {
+            var response = await _mediator.Send(command, ct);
+            return Ok(response);
         }
     }
 }

@@ -54,13 +54,8 @@ namespace WeatherApi.Tests.IntegrationTests
 
             db.SaveChanges();
 
-            db.WeatherForecasts.Add(new WeatherForecast
-            {
-                Id = Guid.NewGuid(),
-                City = "Australia/Melbourne",
-                ForecastDate = new DateTimeOffset(2020, 01, 02, 0, 0, 0, TimeSpan.Zero),
-                Forecast = 23.35m
-            });
+            db.WeatherForecasts.Add(new WeatherForecast(Guid.NewGuid(), "Australia/Melbourne",
+                new DateTimeOffset(2020, 01, 02, 0, 0, 0, TimeSpan.Zero), 23.35m));
 
             db.SaveChanges();
         }

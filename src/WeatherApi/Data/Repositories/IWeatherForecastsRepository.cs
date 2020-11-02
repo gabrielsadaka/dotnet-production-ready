@@ -9,5 +9,7 @@ namespace WeatherApi.Data.Repositories
     {
         Task<WeatherForecast> GetWeatherForecast(string city, DateTimeOffset forecastDate,
             CancellationToken ct = default);
+
+        Task AddWeatherForecast(WeatherForecast weatherForecast, CancellationToken ct = default);
     }
 }

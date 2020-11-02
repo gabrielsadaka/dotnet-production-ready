@@ -21,5 +21,11 @@ namespace WeatherApi.Data.Repositories
             return _weatherContext.WeatherForecasts
                 .SingleOrDefaultAsync(x => x.City == city && x.ForecastDate == forecastDate, ct);
         }
+
+        public async Task AddWeatherForecast(WeatherForecast weatherForecast, CancellationToken ct = default)
+        {
+            _weatherContext.WeatherForecasts.Add(weatherForecast);
+            await _weatherContext.SaveChangesAsync(ct);
+        }
     }
 }
