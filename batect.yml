@@ -15,11 +15,6 @@ containers:
         name: weatherApi-tests-obj
         container: /code/src/WeatherApi.Tests/obj
     working_directory: /code
-    environment:
-      ASPNETCORE_ENVIRONMENT: test
-      WEATHERDB__PASSWORD: $POSTGRES_PASSWORD
-    dependencies:
-      - postgres
   postgres:
     image: postgres:13
     ports:
@@ -75,6 +70,11 @@ containers:
       GOOGLE_PROJECT: $GOOGLE_PROJECT
       GITHUB_SHA: $GITHUB_SHA
 tasks:
+  build:
+    description: Build Weather API
+    run:
+      container: build-env
+      command: dotnet build
   migrate-integration-test-db:
     description: Run database migrations for integration tests
     dependencies:
@@ -99,16 +99,16 @@ tasks:
         DB_USERNAME: weather_user
         DB_PASSWORD: $POSTGRES_PASSWORD
         DB_NAME: weather_db
-  build:
-    description: Build Weather API
-    run:
-      container: build-env
-      command: dotnet build
   test:
     description: Test Weather API
     run:
       container: build-env
       command: dotnet test
+      environment:
+        ASPNETCORE_ENVIRONMENT: test
+        WEATHERDB__PASSWORD: $POSTGRES_PASSWORD
+    dependencies:
+      - postgres
     prerequisites:
       - migrate-integration-test-db
 

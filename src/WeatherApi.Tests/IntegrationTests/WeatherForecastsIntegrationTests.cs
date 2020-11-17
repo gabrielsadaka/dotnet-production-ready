@@ -5,7 +5,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using WeatherApi.Extensions;
+using WeatherApi.Tests.Extensions;
 using Xunit;
 
 namespace WeatherApi.Tests.IntegrationTests
@@ -82,7 +82,8 @@ namespace WeatherApi.Tests.IntegrationTests
             const string city = "Australia/Melbourne";
             const string forecastDate = "2020-02-05T00:00:00.000Z";
             const decimal forecast = 23.35m;
-            var body = new {
+            var body = new
+            {
                 city,
                 forecastDate,
                 forecast
@@ -101,7 +102,8 @@ namespace WeatherApi.Tests.IntegrationTests
             const string city = "Australia/Melbourne";
             const string forecastDate = "2020-04-22T00:00:00.000Z";
             const decimal forecast = 23.35m;
-            var body = new {
+            var body = new
+            {
                 city,
                 forecastDate,
                 forecast
