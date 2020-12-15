@@ -32,8 +32,6 @@ namespace WeatherApi.Tests.IntegrationTests
                 var logger = scopedServices
                     .GetRequiredService<ILogger<WeatherApiWebApplicationFactory<TStartup>>>();
 
-                db.Database.EnsureCreated();
-
                 try
                 {
                     InitializeDbForTests(db);
