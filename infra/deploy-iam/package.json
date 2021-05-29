@@ -1,7 +1,7 @@
 {
     "name": "weather-api-dev-deploy-iam",
     "devDependencies": {
-        "@types/node": "10.17.40"
+        "@types/node": "10.17.60"
     },
     "dependencies": {
         "@pulumi/pulumi": "2.21.0",
