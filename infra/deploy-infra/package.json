@@ -1,10 +1,10 @@
 {
     "name": "weather-api-dev-deploy-infra",
     "devDependencies": {
-        "@types/node": "^10.0.0"
+        "@types/node": "10.17.40"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^2.0.0",
-        "@pulumi/gcp": "^3.0.0"
+        "@pulumi/pulumi": "2.21.0",
+        "@pulumi/gcp": "3.25.0"
     }
 }
