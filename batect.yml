@@ -51,7 +51,7 @@ containers:
       DB_SCHEMA_NAME: public
       DB_MIGRATIONS_LOCATION: filesystem:/migrations
   pulumi:
-    image: pulumi/pulumi:v2.12.1
+    image: pulumi/pulumi:v2.25.2
     working_directory: /app
     volumes:
       - local: infra
@@ -69,7 +69,7 @@ containers:
       GITHUB_SHA: $GITHUB_SHA
     entrypoint: bash
   gcloud-sdk:
-    image: google/cloud-sdk:314.0.0-alpine
+    image: google/cloud-sdk:342.0.0-alpine
     working_directory: /app
     volumes:
       - local: .
