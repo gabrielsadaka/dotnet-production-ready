@@ -1,4 +1,4 @@
-FROM flyway/flyway:7.0
+FROM flyway/flyway:7.9
 
 USER root
 
