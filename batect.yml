@@ -51,7 +51,7 @@ containers:
       DB_SCHEMA_NAME: public
       DB_MIGRATIONS_LOCATION: filesystem:/migrations
   pulumi:
-    image: pulumi/pulumi:v3.3.1
+    image: pulumi/pulumi:v3.10.3
     working_directory: /app
     volumes:
       - local: infra
